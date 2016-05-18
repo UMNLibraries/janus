@@ -1,0 +1,27 @@
+{
+  "name": "janus",
+  "version": "0.0.0",
+  "description": "Common handler for all library website searches.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:UMNLibraries/janus.git"
+  },
+  "author": "David Naughton",
+  "license": "MIT",
+  "devDependencies": {
+    "blue-tape": "^0.1.10",
+    "cheerio": "^0.17.0",
+    "request": "^2.44.0"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.34",
+    "require-all": "^2.0.0",
+    "stampit": "^2.1.1",
+    "urijs": "^1.17.1",
+    "xml2js": "^0.4.11"
+  }
+}
