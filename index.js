@@ -18,7 +18,7 @@ module.exports = stampit()
     yield next();
     const [warning, uri] = yield factory.uriFor(ctx.request.query);
     ctx.redirect(uri.href());
-    ctx.status = 301;
+    ctx.status = 302;
   }));
 
   const app = new Koa();
