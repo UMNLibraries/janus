@@ -9,9 +9,8 @@ const InvalidArgumentError = require(__dirname + '/invalid-arg-error');
 
 module.exports = stampit()
 .props({
-  favicon: __dirname + '/public/favicon.ico',
-  port: 8000,
   uriFactoryPlugins: {},
+  favicon: __dirname + '/public/favicon.ico',
   redirectLog: __dirname + '/log/redirect.json',
   redirectLogName: 'redirect',
   redirectLogLevel: 'info',
@@ -74,5 +73,5 @@ module.exports = stampit()
       }
     });
 
-  app.listen(this.port);
+  return app;
 });
