@@ -11,10 +11,10 @@ module.exports = stampit()
 .props({
   uriFactoryPlugins: {},
   favicon: __dirname + '/public/favicon.ico',
-  redirectLog: __dirname + '/log/redirect.json',
+  redirectLog: __dirname + '/logs/redirect.json',
   redirectLogName: 'redirect',
   redirectLogLevel: 'info',
-  errorLog: __dirname + '/log/error.json',
+  errorLog: __dirname + '/logs/error.json',
   errorLogName: 'error',
   errorLogLevel: 'info',
 })
@@ -40,7 +40,7 @@ module.exports = stampit()
   },
 })
 .init(function () {
-  const factory = require('./uri-factory/')(this.uriFactoryPlugins);
+  const factory = require(__dirname + '/uri-factory/')(this.uriFactoryPlugins);
   const redirectLogger = this.redirectLogger();
   const errorLogger = this.errorLogger();
   const event = this.event;
