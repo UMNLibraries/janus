@@ -13,14 +13,18 @@ module.exports = stampit()
   port: 8000,
   uriFactoryPlugins: {},
   redirectLog: __dirname + '/log/redirect.json',
+  redirectLogName: 'redirect',
+  redirectLogLevel: 'info',
   errorLog: __dirname + '/log/error.json',
+  errorLogName: 'error',
+  errorLogLevel: 'info',
 })
 .methods({
   redirectLogger() { 
     return bunyan.createLogger({
-      name: 'redirect',
+      name: this.redirectLogName,
       streams: [{
-        //level: 'info',
+        level: this.redirectLogLevel,
         path: this.redirectLog,
       }],
     });
@@ -28,9 +32,9 @@ module.exports = stampit()
 
   errorLogger() {
     return bunyan.createLogger({
-      name: 'error',
+      name: this.errorLogName,
       streams: [{
-        level: 'info',
+        level: this.errorLogLevel,
         path: this.errorLog,
       }],
     });
