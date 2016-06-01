@@ -5,14 +5,14 @@ const plugin = require('../../uri-factory/plugin');
 
 const bar = stampit()
 .methods({
-  fields() { return {}; },
-  baseUri() {
+  fields () { return {}; },
+  baseUri () {
     return URI({
       protocol: 'https',
       hostname: 'bar.com',
     });
   },
-  uriFor(search, scope, field) {
+  uriFor (search, scope, field) {
     if (!search) {
       return [
         this.emptySearchWarning,

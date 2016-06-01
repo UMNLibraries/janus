@@ -75,7 +75,7 @@ test('factory uriFor()', co(function *(t) {
 
   try {
     const [bogusWarning, bogusUri] = yield factory.uriFor({target: 'bogus', search: 'bogus'});
-  } catch (e) { 
+  } catch (e) {
     t.ok(
       (e instanceof InvalidArgumentError),
       'uriFor() throws an InvalidArgumentError for an unknown target'

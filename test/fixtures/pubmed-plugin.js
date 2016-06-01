@@ -5,8 +5,8 @@ const plugin = require('../../uri-factory/plugin');
 
 const pubmed = stampit()
 .methods({
-  fields() { return {}; },
-  baseUri() {
+  fields () { return {}; },
+  baseUri () {
     return URI({
       protocol: 'https',
       hostname: 'www.ncbi.nlm.nih.gov',
@@ -18,7 +18,7 @@ const pubmed = stampit()
       'otool': 'biblio-search-uri-tests',
     });
   },
-  uriFor(search, scope, field) {
+  uriFor (search, scope, field) {
     if (!search) {
       return [
         this.emptySearchWarning,
@@ -30,6 +30,6 @@ const pubmed = stampit()
       this.baseUri().addQuery({term: search}),
     ];
   },
-})
+});
 
-module.exports = plugin.compose(pubmed)
+module.exports = plugin.compose(pubmed);

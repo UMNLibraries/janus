@@ -5,14 +5,14 @@ const plugin = require('../../uri-factory/plugin');
 
 const foo = stampit()
 .methods({
-  scopes() { 
+  scopes () {
     return {
       business: 'Business Library',
       math: 'Math Library',
       music: 'Music Library',
     };
   },
-  baseUri() {
+  baseUri () {
     return URI({
       protocol: 'https',
       hostname: 'foo.com',

@@ -1,76 +1,76 @@
-'use strict'
-const test = require('blue-tape').test
-const plugin = require('./fixtures/foo-plugin')()
-const tester = require('../uri-factory/plugin-tester')()
-tester.runIntegrationTests = false
+'use strict';
+const test = require('blue-tape').test;
+const plugin = require('./fixtures/foo-plugin')();
+const tester = require('../uri-factory/plugin-tester')();
+tester.runIntegrationTests = false;
 
 test('plugin baseUri()', function (t) {
-  tester.baseUri(t, plugin, 'https://foo.com')
-})
+  tester.baseUri(t, plugin, 'https://foo.com');
+});
 
 test('plugin emptySearchUri()', function (t) {
-  tester.emptySearchUri(t, plugin, 'https://foo.com')
-})
+  tester.emptySearchUri(t, plugin, 'https://foo.com');
+});
 
-test ('plugin uriFor() missing "search" arguments', function (t) {
+test('plugin uriFor() missing "search" arguments', function (t) {
   // testCases map state descriptions to simpleSearch arguments
-  const testCases = 
-  { 'all arguments are null':
-    { search: null
-    , scope: null
-    , field: null
-    }
-  , 'only "subject" argument has a truthy value':
-    { search: ''
-    , scope: null
-    , field: 'subject'
-    } 
-  , 'only "scope" argument has a truthy value':
-    { search: false
-    , scope: 'math'
-    , field: null
-    } 
-  , 'both "scope" and "field" arguments have truthy values':
-    { search: 0
-    , scope: 'music'
-    , field: 'title'
-    } 
-  }
-  tester.missingSearchArgs(t, plugin, testCases)
-})
+  const testCases = {
+    'all arguments are null': {
+      search: null,
+      scope: null,
+      field: null,
+    },
+    'only "subject" argument has a truthy value': {
+      search: '',
+      scope: null,
+      field: 'subject',
+    },
+    'only "scope" argument has a truthy value': {
+      search: false,
+      scope: 'math',
+      field: null,
+    },
+    'both "scope" and "field" arguments have truthy values': {
+      search: 0,
+      scope: 'music',
+      field: 'title',
+    },
+  };
+  tester.missingSearchArgs(t, plugin, testCases);
+});
 
 test('plugin invalid field args', function (t) {
-  tester.invalidFieldArgs(t, plugin, 'https://foo.com?search=darwin')
-})
+  tester.invalidFieldArgs(t, plugin, 'https://foo.com?search=darwin');
+});
 
 test('plugin invalid scope args', function (t) {
-  tester.invalidScopeArgs(t, plugin, 'https://foo.com?search=darwin')
-})
+  tester.invalidScopeArgs(t, plugin, 'https://foo.com?search=darwin');
+});
 
-test ('plugin simpleSearch() valid "search" arguments', function (t) {
+test('plugin simpleSearch() valid "search" arguments', function (t) {
   // testCases map expectedUrl to simpleSearch arguments
-  const testCases = 
-  { 'https://foo.com?search=darwin':
-    { search: 'darwin'
-    , scope: null
-    , field: null
-    }
-  , 'https://foo.com?search=darwin&field=subject':
-    { search: 'darwin'
-    , scope: null
-    , field: 'subject'
-    } 
-  , 'https://foo.com?search=darwin&scope=math':
-    { search: 'darwin'
-    , scope: 'math'
-    , field: null
-    } 
-  , 'https://foo.com?search=darwin&scope=music&field=title':
-    { search: 'darwin'
-    , scope: 'music'
-    , field: 'title'
-    } 
-  }
+  const testCases = {
+    'https://foo.com?search=darwin': {
+      search: 'darwin',
+      scope: null,
+      field: null,
+    },
+    'https://foo.com?search=darwin&field=subject': {
+      search: 'darwin',
+      scope: null,
+      field: 'subject',
+    },
+    'https://foo.com?search=darwin&scope=math': {
+      search: 'darwin',
+      scope: 'math',
+      field: null,
+    },
+    'https://foo.com?search=darwin&scope=music&field=title': {
+      search: 'darwin',
+      scope: 'music',
+      field: 'title',
+    },
+  };
 
-  tester.validSearchArgs(t, plugin, testCases, function () {})
-})
+  tester.validSearchArgs(t, plugin, testCases, function () {});
+});
