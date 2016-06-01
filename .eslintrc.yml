@@ -1,0 +1,8 @@
+extends: standard
+plugins:
+  - standard
+env:
+  node: true
+rules:
+  comma-dangle: "off"
+  semi: ["error", "always"]
