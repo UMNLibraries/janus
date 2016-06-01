@@ -19,7 +19,17 @@ module.exports = stampit()
   errorLogLevel: 'info',
 })
 .methods({
-  redirectLogger() { 
+  errorLogger () {
+    return bunyan.createLogger({
+      name: this.errorLogName,
+      streams: [{
+        level: this.errorLogLevel,
+        path: this.errorLog,
+      }],
+    });
+  },
+
+  redirectLogger () { 
     return bunyan.createLogger({
       name: this.redirectLogName,
       streams: [{
@@ -29,32 +39,53 @@ module.exports = stampit()
     });
   },
 
-  errorLogger() {
-    return bunyan.createLogger({
-      name: this.errorLogName,
-      streams: [{
-        level: this.errorLogLevel,
-        path: this.errorLog,
-      }],
-    });
+  redirectLogEvent (ctx) {
+    return {
+      "request": {
+        "method": ctx.req.method,
+        "url": ctx.req.url,
+        "referer": ctx.req.headers["referer"],
+        "userAgent": ctx.req.headers["user-agent"],
+      },
+      "target": ctx.request.query.target,
+      "search": ctx.request.query.search,
+      "scope": ctx.request.query.scope,
+      "field": ctx.request.query.field,
+    };
   },
 })
 .init(function () {
   const factory = require(__dirname + '/uri-factory/')(this.uriFactoryPlugins);
   const redirectLogger = this.redirectLogger();
   const errorLogger = this.errorLogger();
-  const event = this.event;
+
+  // Would like to set this default function in props, but that results in
+  // it getting set to {} instead of a function, for some unknown reason.
+  const redirectLogEvent = this.redirectLogEvent || 
+  function (ctx) {
+    return {
+      "request": {
+        "method": ctx.req.method,
+        "url": ctx.req.url,
+        "referer": ctx.req.headers["referer"],
+        "userAgent": ctx.req.headers["user-agent"],
+      },
+      "target": ctx.request.query.target,
+      "search": ctx.request.query.search,
+      "scope": ctx.request.query.scope,
+      "field": ctx.request.query.field,
+    };
+  };
 
   router.get('/', co(function* (ctx, next) {
     yield next();
     const [warning, uri] = yield factory.uriFor(ctx.request.query);
     ctx.status = 302;
     ctx.redirect(uri.href());
-    const newEvent = event(ctx);
     if (warning) {
-      redirectLogger.warn({'event': newEvent}, warning);
+      redirectLogger.warn({'event': redirectLogEvent(ctx)}, warning);
     } else {
-      redirectLogger.info({'event': newEvent}, 'ok');
+      redirectLogger.info({'event': redirectLogEvent(ctx)}, 'ok');
     }
   }));
 
@@ -66,8 +97,7 @@ module.exports = stampit()
     .on('error', (err, ctx) => {
       if (err instanceof InvalidArgumentError) {
         err.status = ctx.status = 400;
-        const newEvent = event(ctx);
-        errorLogger.warn({'event': newEvent}, err.message);
+        errorLogger.warn({'event': redirectLogEvent(ctx)}, err.message);
       } else {
         errorLogger.error({'error': err}, err.message);
       }
