@@ -4,7 +4,7 @@ const stampit = require('stampit');
 
 module.exports = stampit()
 .methods({
-  uriFor(params) {
+  uriFor (params) {
     const factory = this;
     return new Promise(function (resolve, reject) {
       if (!Reflect.has(factory, params.target)) {

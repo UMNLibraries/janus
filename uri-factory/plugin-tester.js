@@ -10,7 +10,7 @@ module.exports = stampit()
   runIntegrationTests: false,
 })
 .methods({
-  baseUri: co(function* (t, plugin, expectedHref) {
+  baseUri: co(function *(t, plugin, expectedHref) {
     const uri = plugin.baseUri();
 
     t.equal(
@@ -27,7 +27,7 @@ module.exports = stampit()
     t.end();
   }),
 
-  emptySearchUri: co(function* (t, plugin, expectedHref) {
+  emptySearchUri: co(function *(t, plugin, expectedHref) {
     const uri = plugin.emptySearchUri();
 
     t.equal(
@@ -54,7 +54,7 @@ module.exports = stampit()
         const [warning, uri] = plugin.uriFor(args.search, args.scope, args.field);
         t.equal(uri.href(), expectedHref, 'when ' + conditions + ', we get expected href (' + expectedHref + ')...');
         t.equal(warning, 'Missing or empty search expression.', '...and expected warning returned for a missing search expression');
-      })()
+      })();
     }
     t.end();
   },
@@ -73,7 +73,7 @@ module.exports = stampit()
     t.end();
   },
 
-  validSearchArgs: co(function* (t, plugin, testCases, getResultCount) {
+  validSearchArgs: co(function *(t, plugin, testCases, getResultCount) {
     for (let expectedHref in testCases) {
       let args = testCases[expectedHref];
       let [warning, uri] = plugin.uriFor(args.search, args.scope, args.field);

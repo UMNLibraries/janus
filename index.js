@@ -1,20 +1,21 @@
 'use strict';
+const path = require('path');
 const stampit = require('stampit');
 const Koa = require('koa');
 const favicon = require('koa-favicon');
 const router = require('koa-router')();
 const co = require('bluebird').coroutine;
 const bunyan = require('bunyan');
-const InvalidArgumentError = require(__dirname + '/invalid-arg-error');
+const InvalidArgumentError = require(path.resolve(__dirname, 'invalid-arg-error'));
 
 module.exports = stampit()
 .props({
   uriFactoryPlugins: {},
-  favicon: __dirname + '/public/favicon.ico',
-  redirectLog: __dirname + '/logs/redirect.json',
+  favicon: path.resolve(__dirname, 'public/favicon.ico'),
+  redirectLog: path.resolve(__dirname, 'logs/redirect.json'),
   redirectLogName: 'redirect',
   redirectLogLevel: 'info',
-  errorLog: __dirname + '/logs/error.json',
+  errorLog: path.resolve(__dirname, 'logs/error.json'),
   errorLogName: 'error',
   errorLogLevel: 'info',
 })
@@ -29,7 +30,7 @@ module.exports = stampit()
     });
   },
 
-  redirectLogger () { 
+  redirectLogger () {
     return bunyan.createLogger({
       name: this.redirectLogName,
       streams: [{
@@ -41,21 +42,21 @@ module.exports = stampit()
 
   redirectLogEvent (ctx) {
     return {
-      "request": {
-        "method": ctx.req.method,
-        "url": ctx.req.url,
-        "referer": ctx.req.headers["referer"],
-        "userAgent": ctx.req.headers["user-agent"],
+      'request': {
+        'method': ctx.req.method,
+        'url': ctx.req.url,
+        'referer': ctx.req.headers['referer'],
+        'userAgent': ctx.req.headers['user-agent'],
       },
-      "target": ctx.request.query.target,
-      "search": ctx.request.query.search,
-      "scope": ctx.request.query.scope,
-      "field": ctx.request.query.field,
+      'target': ctx.request.query.target,
+      'search': ctx.request.query.search,
+      'scope': ctx.request.query.scope,
+      'field': ctx.request.query.field,
     };
   },
 })
 .init(function () {
-  const factory = require(__dirname + '/uri-factory/')(this.uriFactoryPlugins);
+  const factory = require(path.resolve(__dirname, 'uri-factory/'))(this.uriFactoryPlugins);
   const redirectLogger = this.redirectLogger();
   const errorLogger = this.errorLogger();
   const redirectLogEvent = this.redirectLogEvent;

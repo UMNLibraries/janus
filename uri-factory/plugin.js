@@ -4,7 +4,7 @@ const URI = require('urijs');
 
 module.exports = stampit()
 .props({
-  emptySearchWarning: 'Missing or empty search expression.', 
+  emptySearchWarning: 'Missing or empty search expression.',
   badScopeWarning: 'Unrecognized scope: ',
   badFieldWarning: 'Unrecognized field: ',
 })
@@ -14,7 +14,7 @@ module.exports = stampit()
   // be more difficult, if not impossible in some cases, to override.
   // See the test/fixtures for more example implementations.
 
-  fields() {
+  fields () {
     return {
       author: 'author',
       title: 'title',
@@ -22,7 +22,7 @@ module.exports = stampit()
     };
   },
 
-  scopes() {
+  scopes () {
     return {};
     /* example override implementation:
     {
@@ -33,7 +33,7 @@ module.exports = stampit()
     */
   },
 
-  baseUri() {
+  baseUri () {
     return URI();
     /* example override implementation:
     return URI({
@@ -43,11 +43,11 @@ module.exports = stampit()
     */
   },
 
-  emptySearchUri() {
+  emptySearchUri () {
     return this.baseUri();
   },
 
-  uriFor(search, scope, field) {
+  uriFor (search, scope, field) {
     if (!search) {
       return [
         this.emptySearchWarning,
@@ -64,13 +64,13 @@ module.exports = stampit()
         warnings.push(this.badScopeWarning + `"${scope}"`);
       }
     }
-      
+
     if (field) {
       if (field in this.fields()) {
         params['field'] = field;
       } else {
         warnings.push(this.badFieldWarning + `"${field}"`);
-      }    
+      }
     }
 
     return [
