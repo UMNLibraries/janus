@@ -58,24 +58,7 @@ module.exports = stampit()
   const factory = require(__dirname + '/uri-factory/')(this.uriFactoryPlugins);
   const redirectLogger = this.redirectLogger();
   const errorLogger = this.errorLogger();
-
-  // Would like to set this default function in props, but that results in
-  // it getting set to {} instead of a function, for some unknown reason.
-  const redirectLogEvent = this.redirectLogEvent || 
-  function (ctx) {
-    return {
-      "request": {
-        "method": ctx.req.method,
-        "url": ctx.req.url,
-        "referer": ctx.req.headers["referer"],
-        "userAgent": ctx.req.headers["user-agent"],
-      },
-      "target": ctx.request.query.target,
-      "search": ctx.request.query.search,
-      "scope": ctx.request.query.scope,
-      "field": ctx.request.query.field,
-    };
-  };
+  const redirectLogEvent = this.redirectLogEvent;
 
   router.get('/', co(function* (ctx, next) {
     yield next();
