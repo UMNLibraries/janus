@@ -60,7 +60,7 @@ module.exports = stampit()
   const errorLogger = this.errorLogger();
   const redirectLogEvent = this.redirectLogEvent;
 
-  router.get('/', co(function* (ctx, next) {
+  router.get('/', co(function *redirect (ctx, next) {
     yield next();
     const [warning, uri] = yield factory.uriFor(ctx.request.query);
     ctx.status = 302;
