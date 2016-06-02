@@ -11,7 +11,10 @@
     "type": "git",
     "url": "git@github.com:UMNLibraries/janus.git"
   },
-  "author": "David Naughton",
+  "author": {
+    "name": "David Naughton",
+    "email": "naughton@umn.edu"
+  },
   "license": "MIT",
   "devDependencies": {
     "blue-tape": "^0.1.10",
