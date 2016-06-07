@@ -8,7 +8,7 @@ Many library websites have multiple search forms that redirect users to various 
 Janus is a common target application for all those searches, allowing for data collection and 
 other handling of the searches with a single code base.
 
-Janus uses a simple URL API for all search engines, which also makes search forms easier to
+Janus uses a simple URI API for all search engines, which also makes search forms easier to
 write and maintain. For example, at UMN Libraries, Janus transforms this request...
 
 https://stacks.lib.umn.edu/janus?target=mncatdiscovery&search=darwin
@@ -17,6 +17,29 @@ https://stacks.lib.umn.edu/janus?target=mncatdiscovery&search=darwin
 
 http://primo.lib.umn.edu/primo_library/libweb/action/dlSearch.do?institution=TWINCITIES&vid=TWINCITIES&indx=1&dym=true&highlight=true&lang=eng&search_scope=mncat_discovery&query=any%2Ccontains%2Cdarwin
 
+## Quick Start
+
+One way to quickly try Janus:
+
+1. Install [Node.js](https://nodejs.org/) >= 6.0.0.
+
+2. `git clone` this repo.
+
+3. In the repo directory, use Node.js to run this code:
+
+```javascript
+'use strict';
+const janus = require('./');
+const pubmedPlugin = require('./test/fixtures/pubmed-plugin');
+const app = janus({
+  uriFactoryPlugins: {pubmed: pubmedPlugin},
+});
+app.listen(3000);
+```
+
+4. Make an HTTP GET request (e.g. in a web browser) for: http://localhost:3000?target=pubmed&search=neoplasm
+
+Janus should write a log message to STDOUT, and redirect the request to PubMed, which should respond with search results for "neoplasm".
 
 ## Use
 

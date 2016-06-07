@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "bluebird": "^2.9.34",
-    "bunyan": "^1.4.0",
+    "bunyan": "^1.8.1",
     "koa": "next",
     "koa-favicon": "next",
     "koa-router": "next",

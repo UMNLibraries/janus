@@ -12,32 +12,16 @@ module.exports = stampit()
 .props({
   uriFactoryPlugins: {},
   favicon: path.resolve(__dirname, 'public/favicon.ico'),
-  redirectLog: path.resolve(__dirname, 'logs/redirect.json'),
-  redirectLogName: 'redirect',
-  redirectLogLevel: 'info',
-  errorLog: path.resolve(__dirname, 'logs/error.json'),
-  errorLogName: 'error',
-  errorLogLevel: 'info',
+  redirectLog: {name: 'redirect'},
+  errorLog: {name: 'error'},
 })
 .methods({
   errorLogger () {
-    return bunyan.createLogger({
-      name: this.errorLogName,
-      streams: [{
-        level: this.errorLogLevel,
-        path: this.errorLog,
-      }],
-    });
+    return bunyan.createLogger(this.errorLog);
   },
 
   redirectLogger () {
-    return bunyan.createLogger({
-      name: this.redirectLogName,
-      streams: [{
-        level: this.redirectLogLevel,
-        path: this.redirectLog,
-      }],
-    });
+    return bunyan.createLogger(this.redirectLog);
   },
 
   redirectLogEvent (ctx) {
