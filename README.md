@@ -1,19 +1,22 @@
-# janus
+# Janus
 
 [![Build Status](https://secure.travis-ci.org/UMNLibraries/janus.png)](http://travis-ci.org/UMNLibraries/janus)
 
-Common handler for all library website searches.
+Common handler for all library website searches. Configurable, extensible, re-usable.
 
+Many library websites have multiple search forms that redirect users to various search engines.
+Janus is a common target application for all those searches, allowing for data collection and 
+other handling of the searches with a single code base.
 
-## Install
+Janus uses a simple URL API for all search engines, which also makes search forms easier to
+write and maintain. For example, at UMN Libraries, Janus transforms this request...
 
-Install with npm. In package.json:
+https://stacks.lib.umn.edu/janus?target=mncatdiscovery&search=darwin
 
-```json
-  "dependencies": {
-    "janus": "UMNLibraries/janus"
-  }
-```
+...into this MNCAT Discovery (Primo, our library catalog) request:
+
+http://primo.lib.umn.edu/primo_library/libweb/action/dlSearch.do?institution=TWINCITIES&vid=TWINCITIES&indx=1&dym=true&highlight=true&lang=eng&search_scope=mncat_discovery&query=any%2Ccontains%2Cdarwin
+
 
 ## Use
 
@@ -23,6 +26,16 @@ const plugins = require('janus-uri-factory-plugins');
 const app = janus({
   uriFactoryPlugins: plugins,
 });
+```
+
+## Install
+
+Install with npm. In package.json:
+
+```json
+  "dependencies": {
+    "janus": "UMNLibraries/janus"
+  }
 ```
 
 ## Test
