@@ -36,7 +36,7 @@ npm test
 Run a single unit test by invoking [tape](https://github.com/substack/tape) directly:
 
 ```
-./node_modules/tape/bin/tape index.js
+./node_modules/.bin/tape test/factory.js
 ```
 
 ## Lint
@@ -50,6 +50,6 @@ npm run lint
 Lint a single file by invoking [ESLint](http://eslint.org/) directly:
 
 ```
-./node_modules/eslint/bin/eslint.js index.js
+./node_modules/.bin/eslint index.js
 ```
 
