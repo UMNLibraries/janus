@@ -5,7 +5,7 @@
 Common handler for all library website searches. Configurable, extensible, re-usable.
 
 Many library websites have multiple search forms that redirect users to various search engines.
-Janus is a common target application for all those searches, allowing for data collection and 
+Janus is a common target application for all those searches, allowing for data collection and
 other handling of the searches with a single code base.
 
 Janus uses a simple URI API for all search engines, which also makes search forms easier to
@@ -26,7 +26,6 @@ One way to quickly try Janus:
 2. `git clone` this repo.
 
 3. In the repo directory, use Node.js to run this code:
-
 ```javascript
 'use strict';
 const janus = require('./');
@@ -72,6 +71,12 @@ value is invalid, Janus will still redirect, ignoring the `scope`, and log a war
 * `subject`
 
 Any other `field` value will cause Janus to ignore it and log a warning.
+
+### Application Factory
+
+Janus is a [stampit](https://github.com/stampit-org/stampit) factory method that creates a [Koa v2.x](https://github.com/koajs/koa/tree/v2.x) application.
+An understanding of those technologies may help, but should not be necessary, to understand the following API sections. More advanced use of Janus will
+likely require that understanding.
 
 ### URI Factory Plugins
 
@@ -126,4 +131,3 @@ Lint a single file by invoking [ESLint](http://eslint.org/) directly:
 ```
 node_modules/.bin/eslint index.js
 ```
-
