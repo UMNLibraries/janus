@@ -74,9 +74,29 @@ Any other `field` value will cause Janus to ignore it and log a warning.
 
 ### Application Factory
 
-Janus is a [stampit](https://github.com/stampit-org/stampit) factory method that creates a [Koa v2.x](https://github.com/koajs/koa/tree/v2.x) application.
+Janus is a [stampit](https://github.com/stampit-org/stampit) factory function that creates a [Koa v2.x](https://github.com/koajs/koa/tree/v2.x) application.
 An understanding of those technologies may help, but should not be necessary, to understand the following API sections. More advanced use of Janus will
 likely require that understanding.
+
+Most Janus configuration involves passing a properties object to the factory function:
+
+```javascript
+const app = janus({
+  uriFactoryPlugins: {
+    target1: target1Plugin,
+    target2: target2Plugin,
+  },
+  redirectLog: {
+    // options for bunyan.createLogger()
+  },
+  errorLog: {
+    // options for bunyan.createLogger()
+  },
+  favicon: '/path/to/favicon',
+});
+```
+
+More about these properties in the sections below.
 
 ### URI Factory Plugins
 
