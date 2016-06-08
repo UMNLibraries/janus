@@ -15,11 +15,11 @@ test('pubmed-plugin fields override', function (t) {
 });
 
 test('pubmed-plugin baseUri()', function (t) {
-  tester.baseUri(t, plugin, 'https://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&otool=biblio-search-uri-tests');
+  tester.baseUri(t, plugin, 'https://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&otool=janus-tests');
 });
 
 test('pubmed-plugin emptySearchUri()', function (t) {
-  tester.emptySearchUri(t, plugin, 'https://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&otool=biblio-search-uri-tests');
+  tester.emptySearchUri(t, plugin, 'https://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&otool=janus-tests');
 });
 
 test('pubmed-plugin uriFor() missing "search" arguments', function (t) {
@@ -37,7 +37,7 @@ test('pubmed-plugin uriFor() missing "search" arguments', function (t) {
 test('pubmed-plugin uriFor() valid "search" arguments', function (t) {
   // testCases map expected uri to uriFor() arguments
   const testCases = {
-    'https://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&otool=biblio-search-uri-tests&term=neoplasm': {
+    'https://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&otool=janus-tests&term=neoplasm': {
       search: 'neoplasm',
       scope: null,
       field: null,
