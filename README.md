@@ -92,7 +92,7 @@ const app = janus({
   errorLog: {
     // options for bunyan.createLogger()
   },
-  favicon: '/path/to/favicon',
+  favicon: '/path/to/favicon.ico',
 });
 ```
 
@@ -100,7 +100,11 @@ More about these properties in the sections below.
 
 ### URI Factory Plugins
 
-Janus generates redirect URIs with a factory. The most obvious and powerful way to extend Janus is to create plugins for this factory, one for each search engine you want to target. See the [UMN Libraries plugins](https://github.com/UMNLibraries/janus-uri-factory-plugins) for examples.
+Janus generates redirect URIs with a factory. The most obvious and powerful way to extend Janus is to create plugins for this factory, one for each
+search engine you want to target. 
+
+For simple examples, see the `test/fixtures/*plugin.js` files in this repo. For more complex examples, see the 
+[UMN Libraries plugins](https://github.com/UMNLibraries/janus-uri-factory-plugins).
 
 
 

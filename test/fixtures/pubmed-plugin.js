@@ -15,7 +15,7 @@ const pubmed = stampit()
       'entrez',
     ]).query({
       'db': 'pubmed',
-      'otool': 'biblio-search-uri-tests',
+      'otool': 'janus-tests',
     });
   },
   uriFor (search, scope, field) {
