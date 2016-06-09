@@ -123,6 +123,8 @@ Janus provides two re-usable plugin components, both in the `uri-factory/` direc
 
 #### Plugin API
 
+See `uri-factory/plugin.js` for base and example implementations of these methods and properties.
+
 ##### uriFor([search] [,scope] [,field])
 
 Returns an array where the first element is a string, which should contain any warnings associated with missing search expressions or invalid scopes or fields, 
@@ -132,9 +134,44 @@ The UMN Libraries plugins use urijs objects for the second element of the return
 
 This is the only method that the Janus URI factory will call on a plugin, so it is the only required method a plugin must implement.
 
+##### baseUri()
 
+Returns an object that other plugin methods can modify to generate redirect URIs. Optional but useful.
 
+##### emptySearchUri()
 
+Because [uriFor()](#uriforsearch-scope-field) must never throw, it can be helpful to define in one place what URI to use when the user supplies no search expression.
+Often this URI will be the same as the base URI, so the provided implementation just returns [baseUri()](#baseuri). Optional.
+
+##### fields()
+
+Maps Janus field parameters to their analagous parameters in the target search engine. Optional. Because many search engines use the same parameter names, the provided
+implementation returns:
+
+```javascript
+{
+  author: 'author',
+  title: 'title',
+  subject: 'subject',
+}
+```
+
+##### scopes()
+
+Returns an array or object that defines valid scopes for the target search engine. Because many search engines do not support scopes, the provided implementation returns
+an empty object. Optional.
+
+##### emptySearchWarning
+
+This property provides a string warning for a missing search expression. The provided default is 'Missing or empty search expression.' Optional.
+
+##### badScopeWarning
+
+This property provides a warning for an invalid scope. The provided default is 'Unrecognized scope: '. Optional.
+
+##### badFieldWarning
+
+This property provides a warning for an invalid field. The provided default is 'Unrecognized field: '. Optional.
 
 ## Use
 
