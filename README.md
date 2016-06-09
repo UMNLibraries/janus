@@ -75,8 +75,8 @@ Any other `field` value will cause Janus to ignore it and log a warning.
 ### Application Factory
 
 Janus is a [stampit](https://github.com/stampit-org/stampit) factory function that creates a [Koa v2.x](https://github.com/koajs/koa/tree/v2.x) application.
-An understanding of those technologies may help, but should not be necessary, to understand the following API sections. More advanced use of Janus will
-likely require that understanding.
+An understanding of those technologies may help, but should not be necessary, to understand the following API sections, i.e. instructions for using Janus.
+More advanced use of Janus will likely require understanding those technologies.
 
 Most Janus configuration involves passing a properties object to the factory function:
 
@@ -101,10 +101,20 @@ More about these properties in the sections below.
 ### URI Factory Plugins
 
 Janus generates redirect URIs with a factory. The most obvious and powerful way to extend Janus is to create plugins for this factory, one for each
-search engine you want to target. 
+search engine you want to target. The plugins transform Janus request parameters into URIs for search engine targets. 
+
+The value of the `uriFactoryPlugins` property must be an object, where the keys are values for the `target` parameter
+of the [URI API](#uri-api), and the values are plugins for those targets. 
+
+#### Example Plugins
 
 For simple examples, see the `test/fixtures/*plugin.js` files in this repo. For more complex examples, see the 
 [UMN Libraries plugins](https://github.com/UMNLibraries/janus-uri-factory-plugins).
+
+In most, if not all, cases, reading and modifying existing examples should be sufficient to create your own plugins. A basic understanding of
+stampit and [urijs](https://www.npmjs.com/package/urijs) would help, too.
+
+#### Re-usable Plugin Components
 
 
 
