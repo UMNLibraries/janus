@@ -116,6 +116,24 @@ stampit and [urijs](https://www.npmjs.com/package/urijs) would help, too.
 
 #### Re-usable Plugin Components
 
+Janus provides two re-usable plugin components, both in the `uri-factory/` directory:
+
+* `plugin.js`: A stampit factory function that provides base functionality, extensible by composing with other (e.g. your own) plugins.
+* `plugin-tester.js`: Functions for testing plugins. For examples, see `test/*plugin.js`, and the previously-mentioned [example plugins](#example-plugins).
+
+#### Plugin API
+
+##### uriFor([search] [,scope] [,field])
+
+Returns an array where the first element is a string, which should contain any warnings associated with missing search expressions or invalid scopes or fields, 
+and the second element is an ojbect with an `href()` method, which must return a string representation of the generated redirect URI. `uriFor()` must never throw.
+
+The UMN Libraries plugins use urijs objects for the second element of the return array, but any object with an href method with the appropriate signature is OK.
+
+This is the only method that the Janus URI factory will call on a plugin, so it is the only required method a plugin must implement.
+
+
+
 
 
 ## Use
