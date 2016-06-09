@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/UMNLibraries/janus.png)](http://travis-ci.org/UMNLibraries/janus)
 
-Common handler for all library website searches. Configurable, extensible, re-usable.
+Common target for all library website search forms. Configurable, extensible, re-usable.
 
 Many library websites have multiple search forms that redirect users to various search engines.
 Janus is a common target application for all those searches, allowing for data collection and

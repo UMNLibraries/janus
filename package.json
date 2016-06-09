@@ -1,7 +1,7 @@
 {
   "name": "janus",
   "version": "0.0.0",
-  "description": "Common handler for all library website searches.",
+  "description": "Common target for all library website search forms. Configurable, extensible, re-usable.",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
