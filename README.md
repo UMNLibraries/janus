@@ -173,14 +173,34 @@ This property provides a warning for an invalid scope. The provided default is '
 
 This property provides a warning for an invalid field. The provided default is 'Unrecognized field: '. Optional.
 
-## Use
+### Logging
+
+Janus uses [Bunyan](https://www.npmjs.com/package/bunyan) for logging. If provided, Janus will pass the values of the `redirectLog` and `errorLog` properties to the
+[bunyan.createLogger()](https://www.npmjs.com/package/bunyan#constructor-api) constructor. If not provided, these values default to `{name: 'redirect'}` and `{name: 'error'}`,
+which will cause Bunyan to log to `stdout` and `stderr`, respectively. For more control, override the Janus `redirectLogger()` and/or `errorLogger()` methods, which
+create the Bunyan loggers.
+
+#### redirectLogEvent(ctx)
+
+One of the most valuable features of Janus is logging metadata about each request. To control what metadata Janus logs, override the `redirectLogEvent()` method. It accepts
+one parameter, a Koa context object, and returns an object that Bunyan will include in a redirect log message for the request. See the default implementation in `index.js`
+for an example.
+
+One way to override this method when invoking Janus:
 
 ```javascript
-const janus = require('janus');
-const plugins = require('janus-uri-factory-plugins');
+const plugins = require('your-plugins');
+const janus = require('janus').methods({
+  redirectLogEvent (ctx) {
+    return {
+      // your custom object
+    };
+  },
+}); 
 const app = janus({
   uriFactoryPlugins: plugins,
 });
+app.listen(3000);
 ```
 
 ## Install
