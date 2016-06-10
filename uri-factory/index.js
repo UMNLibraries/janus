@@ -6,19 +6,18 @@ module.exports = stampit()
 .methods({
   uriFor (params) {
     const factory = this;
-    const target = params.target.toLowerCase();
     return new Promise(function (resolve, reject) {
-      if (!Reflect.has(factory, target)) {
-        reject(new InvalidArgumentError(`no plugin defined for target '${target}'`));
+      if (!Reflect.has(factory, params.target)) {
+        reject(new InvalidArgumentError(`no plugin defined for target '${params.target}'`));
       }
-      const plugin = factory[target];
+      const plugin = factory[params.target.toLowerCase()];
       resolve(plugin.uriFor(params.search, params.scope, params.field));
     });
   },
 }).init(function () {
   const factory = this;
   for (let pluginName of Reflect.ownKeys(factory)) {
-    let plugin = factory[pluginName]();
+    let plugin = factory[pluginName.toLowerCase()]();
     if (!(Reflect.has(plugin, 'uriFor') && (Reflect.getPrototypeOf(plugin['uriFor']) === Function.prototype))) {
       throw new InvalidArgumentError(`plugin "${pluginName}" has no uriFor() method`);
     }

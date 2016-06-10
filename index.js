@@ -11,7 +11,7 @@ const InvalidArgumentError = require(path.resolve(__dirname, 'invalid-arg-error'
 module.exports = stampit()
 .props({
   uriFactoryPlugins: {},
-  favicon: path.resolve(__dirname, 'public/favicon.ico'),
+  favicon: path.resolve(__dirname, 'assets/favicon.ico'),
   redirectLog: {name: 'redirect'},
   errorLog: {name: 'error'},
 })
