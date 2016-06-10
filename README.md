@@ -227,6 +227,11 @@ Run a single unit test by invoking [tape](https://github.com/substack/tape) dire
 node_modules/.bin/tape test/factory.js
 ```
 
+### Integration Tests
+
+Some tests make HTTP requests to real web services. To run those tests, set the `RUN_INTEGRATION_TESTS` environment variable to a true value.
+The default value is false.
+
 ## Lint
 
 Lint all files:
