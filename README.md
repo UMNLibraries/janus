@@ -234,7 +234,7 @@ Install with npm. In package.json:
 
 ```json
   "dependencies": {
-    "janus": "UMNLibraries/janus"
+    "@mihilad/janus": "^0.0.0"
   }
 ```
 
