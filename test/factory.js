@@ -55,15 +55,22 @@ test('factory invalid plugins', function (t) {
 
 test('factory uriFor()', co(function *(t) {
   const factory = metaFactory({
-    foo: fooPlugin,
+    FOO: fooPlugin,
     bar: barPlugin,
   });
 
-  const [fooWarning, fooUri] = yield factory.uriFor({target: 'foo', search: 'manchoo', scope: 'business', field: 'author'});
+  let [fooWarning, fooUri] = yield factory.uriFor({target: 'FOO', search: 'manchoo', scope: 'business', field: 'author'});
   t.equal(
     fooUri.href(),
     'https://foo.com?search=manchoo&scope=business&field=author',
-    'expected href for target "foo"'
+    'expected href for target "FOO"'
+  );
+
+  [fooWarning, fooUri] = yield factory.uriFor({target: 'foo', search: 'manchoo'});
+  t.equal(
+    fooUri.href(),
+    'https://foo.com?search=manchoo',
+    'target is case-insensitive: factory param "FOO" works with uriFor() param "foo"'
   );
 
   let [barWarning, barUri] = yield factory.uriFor({target: 'bar', search: 'baz'});
@@ -77,7 +84,7 @@ test('factory uriFor()', co(function *(t) {
   t.equal(
     barUri.href(),
     'https://bar.com?search=baz',
-    'target is case-insensitive'
+    'target is case-insensitive: factory param "bar" works with uriFor() param "BAR"'
   );
 
   try {
