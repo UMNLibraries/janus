@@ -17,6 +17,31 @@ https://stacks.lib.umn.edu/janus?target=mncatdiscovery&search=darwin
 
 http://primo.lib.umn.edu/primo_library/libweb/action/dlSearch.do?institution=TWINCITIES&vid=TWINCITIES&indx=1&dym=true&highlight=true&lang=eng&search_scope=mncat_discovery&query=any%2Ccontains%2Cdarwin
 
+## Contents
+
+- [Quick Start](#quick-start)
+- [API](#api)
+	- [URI API](#uri-api)
+	- [Application Factory](#application-factory)
+	- [URI Factory Plugins](#uri-factory-plugins)
+		- [Example Plugins](#example-plugins)
+		- [Re-usable Plugin Components](#re-usable-plugin-components)
+		- [Plugin API](#plugin-api)
+			- [uriFor([search] [,scope] [,field])](#uriforsearch-scope-field)
+			- [baseUri()](#baseuri)
+			- [emptySearchUri()](#emptysearchuri)
+			- [fields()](#fields)
+			- [scopes()](#scopes)
+			- [emptySearchWarning](#emptysearchwarning)
+			- [badScopeWarning](#badscopewarning)
+			- [badFieldWarning](#badfieldwarning)
+	- [Logging](#logging)
+		- [redirectLogEvent(ctx)](#redirectlogeventctx)
+- [Install](#install)
+- [Test](#test)
+	- [Integration Tests](#integration-tests)
+- [Lint](#lint)
+
 ## Quick Start
 
 One way to quickly try Janus:
@@ -101,14 +126,14 @@ More about these properties in the sections below.
 ### URI Factory Plugins
 
 Janus generates redirect URIs with a factory. The most obvious and powerful way to extend Janus is to create plugins for this factory, one for each
-search engine you want to target. The plugins transform Janus request parameters into URIs for search engine targets. 
+search engine you want to target. The plugins transform Janus request parameters into URIs for search engine targets.
 
 The value of the `uriFactoryPlugins` property must be an object, where the keys are values for the `target` parameter
-of the [URI API](#uri-api), and the values are plugins for those targets. 
+of the [URI API](#uri-api), and the values are plugins for those targets.
 
 #### Example Plugins
 
-For simple examples, see the `test/fixtures/*plugin.js` files in this repo. For more complex examples, see the 
+For simple examples, see the `test/fixtures/*plugin.js` files in this repo. For more complex examples, see the
 [UMN Libraries plugins](https://github.com/UMNLibraries/janus-uri-factory-plugins).
 
 In most, if not all, cases, reading and modifying existing examples should be sufficient to create your own plugins. A basic understanding of
@@ -127,7 +152,7 @@ See `uri-factory/plugin.js` for base and example implementations of these method
 
 ##### uriFor([search] [,scope] [,field])
 
-Returns an array where the first element is a string, which should contain any warnings associated with missing search expressions or invalid scopes or fields, 
+Returns an array where the first element is a string, which should contain any warnings associated with missing search expressions or invalid scopes or fields,
 and the second element is an ojbect with an `href()` method, which must return a string representation of the generated redirect URI. `uriFor()` must never throw.
 
 The UMN Libraries plugins use urijs objects for the second element of the return array, but any object with an href method with the appropriate signature is OK.
@@ -196,7 +221,7 @@ const janus = require('janus').methods({
       // your custom object
     };
   },
-}); 
+});
 const app = janus({
   uriFactoryPlugins: plugins,
 });
