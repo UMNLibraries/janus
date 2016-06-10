@@ -1,5 +1,5 @@
 {
-  "name": "janus",
+  "name": "@umnlibraries/janus",
   "version": "0.0.0",
   "description": "Common target for all library website search forms. Configurable, extensible, re-usable.",
   "main": "index.js",
