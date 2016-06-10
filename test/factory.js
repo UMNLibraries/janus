@@ -66,11 +66,18 @@ test('factory uriFor()', co(function *(t) {
     'expected href for target "foo"'
   );
 
-  const [barWarning, barUri] = yield factory.uriFor({target: 'bar', search: 'baz'});
+  let [barWarning, barUri] = yield factory.uriFor({target: 'bar', search: 'baz'});
   t.equal(
     barUri.href(),
     'https://bar.com?search=baz',
     'expected href for target "bar"'
+  );
+
+  [barWarning, barUri] = yield factory.uriFor({target: 'BAR', search: 'baz'});
+  t.equal(
+    barUri.href(),
+    'https://bar.com?search=baz',
+    'target is case-insensitive'
   );
 
   try {

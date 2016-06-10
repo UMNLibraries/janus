@@ -6,11 +6,12 @@ module.exports = stampit()
 .methods({
   uriFor (params) {
     const factory = this;
+    const target = params.target.toLowerCase();
     return new Promise(function (resolve, reject) {
-      if (!Reflect.has(factory, params.target)) {
-        reject(new InvalidArgumentError(`no plugin defined for target '${params.target}'`));
+      if (!Reflect.has(factory, target)) {
+        reject(new InvalidArgumentError(`no plugin defined for target '${target}'`));
       }
-      const plugin = factory[params.target];
+      const plugin = factory[target];
       resolve(plugin.uriFor(params.search, params.scope, params.field));
     });
   },
