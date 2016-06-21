@@ -215,7 +215,7 @@ One way to override this method when invoking Janus:
 
 ```javascript
 const plugins = require('your-plugins');
-const janus = require('janus').methods({
+const janus = require('@nihiliad/janus').methods({
   redirectLogEvent (ctx) {
     return {
       // your custom object
