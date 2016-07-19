@@ -117,11 +117,12 @@ const app = janus({
   errorLog: {
     // options for bunyan.createLogger()
   },
+  uriPathPrefix: '/', // Default. Or set it to something custom, like '/janus'.
   favicon: '/path/to/favicon.ico',
 });
 ```
 
-More about these properties in the sections below.
+More about some of these properties in the sections below.
 
 ### URI Factory Plugins
 
@@ -234,7 +235,7 @@ Install with npm. In package.json:
 
 ```json
   "dependencies": {
-    "@mihilad/janus": "^0.0.0"
+    "@nihiliad/janus": "^0.0.0"
   }
 ```
 

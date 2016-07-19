@@ -1,6 +1,6 @@
 {
   "name": "@nihiliad/janus",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Common target for all library website search forms. Configurable, extensible, re-usable.",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,12 @@
     "name": "David Naughton",
     "email": "naughton@umn.edu"
   },
+  "contributors": [
+    {
+    "name": "Eric Larson",
+    "email": "ewlarson@gmail.com"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
     "blue-tape": "^0.1.10",

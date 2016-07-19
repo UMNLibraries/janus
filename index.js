@@ -11,9 +11,10 @@ const InvalidArgumentError = require(path.resolve(__dirname, 'invalid-arg-error'
 module.exports = stampit()
 .props({
   uriFactoryPlugins: {},
-  favicon: path.resolve(__dirname, 'assets/favicon.ico'),
   redirectLog: {name: 'redirect'},
   errorLog: {name: 'error'},
+  uriPathPrefix: '/',
+  favicon: path.resolve(__dirname, 'assets/favicon.ico'),
 })
 .methods({
   errorLogger () {
@@ -45,7 +46,7 @@ module.exports = stampit()
   const errorLogger = this.errorLogger();
   const redirectLogEvent = this.redirectLogEvent;
 
-  router.get('/', co(function *redirect (ctx, next) {
+  router.get(this.uriPathPrefix, co(function *redirect (ctx, next) {
     yield next();
     const [warning, uri] = yield factory.uriFor(ctx.request.query);
     ctx.status = 302;
