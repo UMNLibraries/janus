@@ -19,7 +19,7 @@ module.exports = stampit()
   const factory = this;
   for (let pluginName of Reflect.ownKeys(factory)) {
     const lcPluginName = pluginName.toLowerCase();
-    if (lcPluginName != pluginName) {
+    if (lcPluginName !== pluginName) {
       factory[lcPluginName] = factory[pluginName];
       delete factory[pluginName];
     }

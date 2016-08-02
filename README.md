@@ -271,3 +271,5 @@ Lint a single file by invoking [ESLint](http://eslint.org/) directly:
 ```
 node_modules/.bin/eslint index.js
 ```
+
+If `npm run lint` fails, invoking ESLint directly may be necessary to see the error messages.
