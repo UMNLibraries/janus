@@ -35,6 +35,7 @@ http://primo.lib.umn.edu/primo_library/libweb/action/dlSearch.do?institution=TWI
 			- [emptySearchWarning](#emptysearchwarning)
 			- [badScopeWarning](#badscopewarning)
 			- [badFieldWarning](#badfieldwarning)
+	- [Sessions](#sessions)
 	- [Logging](#logging)
 		- [redirectLogEvent(ctx)](#redirectlogeventctx)
 - [Install](#install)
@@ -65,7 +66,8 @@ app.listen(3000);
 
 Janus should write a log message to STDOUT, and redirect the request to PubMed, which should respond with search results for "neoplasm".
 
-To configure and extend Janus for use in your library, see the [API](#api) section below.
+To configure and extend Janus for use in your library, see the [API](#api) section below. To see how UMN Libraries configures, extends,
+and deployes Janus, see our [janus-deploy](https://github.com/UMNLibraries/janus-deploy) repository.
 
 ## API
 
@@ -110,6 +112,9 @@ const app = janus({
   uriFactoryPlugins: {
     target1: target1Plugin,
     target2: target2Plugin,
+  },
+  sessionOpts: {
+    // options for koa-session
   },
   redirectLog: {
     // options for bunyan.createLogger()
@@ -199,6 +204,33 @@ This property provides a warning for an invalid scope. The provided default is '
 
 This property provides a warning for an invalid field. The provided default is 'Unrecognized field: '. Optional.
 
+### Sessions
+
+Janus uses [koa-session](https://www.npmjs.com/package/koa-session) to assign each unique visitor a session ID, which it logs by default (see [Logging](#logging) below).
+The session IDs are RFC4122 version 1 UUIDs. To customize session ID creation, override the `sessionId()` method. It accepts one parameter, `ctx`, a Koa context object.
+It returns a promise, in case you want to generate IDs via some async process.
+
+One way to override this method when invoking Janus:
+
+```javascript 
+const plugins = require('your-plugins');
+const janus = require('@nihiliad/janus').methods({
+  sessionId (ctx) {
+    return new Promise(function (resolve, reject) {
+      resolve(
+        // generate your session id
+      );
+    });
+  },  
+});
+const app = janus({
+  uriFactoryPlugins: plugins,
+});
+app.listen(3000);
+```
+
+As described in [Application Factory](#application-factory) above, you can also define custom options for koa-session. See `index.js` for the default options.
+
 ### Logging
 
 Janus uses [Bunyan](https://www.npmjs.com/package/bunyan) for logging. If provided, Janus will pass the values of the `redirectLog` and `errorLog` properties to the
@@ -209,15 +241,15 @@ create the Bunyan loggers.
 #### redirectLogEvent(ctx)
 
 One of the most valuable features of Janus is logging metadata about each request. To control what metadata Janus logs, override the `redirectLogEvent()` method. It accepts
-one parameter, a Koa context object, and returns an object that Bunyan will include in a redirect log message for the request. See the default implementation in `index.js`
-for an example.
+two parameters, `ctx`, a Koa context object, and a `defaultEvent`, which you can modify to more easily customize what gets logged. It returns an object that Bunyan will include 
+in a redirect log message for the request. See `defaultRedirectLogEvent()` in `index.js` for the structure of the `defaultEvent`.
 
 One way to override this method when invoking Janus:
 
 ```javascript
 const plugins = require('your-plugins');
 const janus = require('@nihiliad/janus').methods({
-  redirectLogEvent (ctx) {
+  redirectLogEvent (ctx, defaultEvent) {
     return {
       // your custom object
     };
