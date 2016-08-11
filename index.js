@@ -86,7 +86,9 @@ module.exports = stampit()
     .use(favicon(this.favicon))
     .use(convert(session(this.sessionOpts, app)))
     .use(co(function *session (ctx, next) {
-      ctx.session.id = yield sessionId(ctx);
+      if (!ctx.session.id) {
+        ctx.session.id = yield sessionId(ctx);
+      }
       yield next();
     }))
     .use(router.routes())
@@ -94,7 +96,7 @@ module.exports = stampit()
     .on('error', (err, ctx) => {
       if (err instanceof InvalidArgumentError) {
         err.status = ctx.status = 400;
-        errorLogger.warn({'event': redirectLogEvent(ctx)}, err.message);
+        errorLogger.warn({'event': redirectLogEvent(ctx, defaultRedirectLogEvent(ctx))}, err.message);
       } else {
         errorLogger.error({'error': err}, err.message);
       }
