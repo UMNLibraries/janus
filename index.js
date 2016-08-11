@@ -28,7 +28,7 @@ module.exports = stampit()
     return new Promise(function (resolve, reject) {
       resolve(uuid.v1());
     });
-  }, 
+  },
 
   errorLogger () {
     return bunyan.createLogger(this.errorLog);
