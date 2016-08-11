@@ -43,7 +43,7 @@ module.exports = stampit()
   },
 
   defaultRedirectLogEvent (ctx) {
-    return {
+    let logEvent = {
       'request': {
         'method': ctx.request.method,
         'url': ctx.request.url,
@@ -53,12 +53,18 @@ module.exports = stampit()
       'response': {
         'location': ctx.response.header['location'],
       },
-      'target': ctx.request.query.target,
-      'search': ctx.request.query.search,
-      'scope': ctx.request.query.scope,
-      'field': ctx.request.query.field,
-      'sessionId': ctx.session.id,
+      'user': {
+        'sessionId': ctx.session.id,
+      },
+      'query': {
+      },
     };
+    ['target', 'search', 'scope', 'field'].map(param => {
+      logEvent.query[param] = (ctx.request.query[param])
+        ? ctx.request.query[param]
+        : '';
+    });
+    return logEvent;
   },
 })
 .init(function () {
