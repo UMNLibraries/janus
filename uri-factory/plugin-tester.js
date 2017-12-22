@@ -73,10 +73,17 @@ module.exports = stampit()
     t.end();
   },
 
+  invalidFormatArgs: function (t, plugin, expectedHref) {
+    const [warning, uri] = plugin.uriFor('darwin', 'bogus', null);
+    t.equal(uri.href(), expectedHref, 'expected href (' + expectedHref + ') for an invalid "format" value...');
+    t.equal(warning, 'Unrecognized format: "bogus"', '...and expected warning for an invalid "format" value');
+    t.end();
+  },
+
   validSearchArgs: co(function *(t, plugin, testCases, getResultCount) {
     for (let expectedHref in testCases) {
       let args = testCases[expectedHref];
-      let [warning, uri] = plugin.uriFor(args.search, args.scope, args.field);
+      let [warning, uri] = plugin.uriFor(args.search, args.scope, args.field, args.format);
 
       let href = uri.href();
       t.equal(href, expectedHref, 'expectedHref (' + expectedHref + ') for valid args search: ' + args.search + ', scope: ' + args.scope + ', field: ' + args.field + '...');
