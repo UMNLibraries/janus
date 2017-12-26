@@ -90,7 +90,7 @@ module.exports = stampit()
       if (format in this.formats()) {
         params['format'] = format;
       } else {
-        warnings.push(this.badFormatWarning + `"${format}}"`);
+        warnings.push(this.badFormatWarning + `"${format}"`);
       }
     }
 

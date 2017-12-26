@@ -59,7 +59,7 @@ module.exports = stampit()
       'query': {
       },
     };
-    ['target', 'search', 'scope', 'field'].map(param => {
+    ['target', 'search', 'scope', 'field', 'format'].map(param => {
       logEvent.query[param] = (ctx.request.query[param])
         ? ctx.request.query[param]
         : '';

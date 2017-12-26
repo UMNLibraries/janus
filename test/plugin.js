@@ -43,6 +43,10 @@ test('plugin invalid field args', function (t) {
   tester.invalidFieldArgs(t, plugin, 'https://foo.com?search=darwin');
 });
 
+test('plugin invalid format args', function (t) {
+  tester.invalidFormatArgs(t, plugin, 'https://foo.com?search=darwin');
+});
+
 test('plugin invalid scope args', function (t) {
   tester.invalidScopeArgs(t, plugin, 'https://foo.com?search=darwin');
 });
