@@ -18,7 +18,7 @@ const foo = stampit()
       article: 'Journal Articles',
       audio: 'Audio recordings',
       video: 'Video recordings',
-    }
+    };
   },
   baseUri () {
     return URI({
