@@ -59,10 +59,10 @@ test('factory uriFor()', co(function *(t) {
     bar: barPlugin,
   });
 
-  let [fooWarning, fooUri] = yield factory.uriFor({target: 'FOO', search: 'manchoo', scope: 'business', field: 'author'});
+  let [fooWarning, fooUri] = yield factory.uriFor({target: 'FOO', search: 'manchoo', scope: 'business', field: 'author', format: 'audio'});
   t.equal(
     fooUri.href(),
-    'https://foo.com?search=manchoo&scope=business&field=author',
+    'https://foo.com?search=manchoo&scope=business&field=author&format=audio',
     'expected href for target "FOO"'
   );
 

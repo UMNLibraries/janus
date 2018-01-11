@@ -12,6 +12,14 @@ const foo = stampit()
       music: 'Music Library',
     };
   },
+  formats () {
+    return {
+      book: 'Books',
+      article: 'Journal Articles',
+      audio: 'Audio recordings',
+      video: 'Video recordings',
+    };
+  },
   baseUri () {
     return URI({
       protocol: 'https',

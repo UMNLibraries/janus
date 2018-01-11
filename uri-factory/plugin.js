@@ -7,6 +7,7 @@ module.exports = stampit()
   emptySearchWarning: 'Missing or empty search expression.',
   badScopeWarning: 'Unrecognized scope: ',
   badFieldWarning: 'Unrecognized field: ',
+  badFormatWarning: 'Unrecognized format: ',
 })
 .methods({
   // Though some of these methods will likely do nothing except return objects
@@ -33,6 +34,18 @@ module.exports = stampit()
     */
   },
 
+  formats () {
+    return {};
+    /* example override implementation:
+    {
+      audio: 'Audio recordings',
+      books: 'Books',
+      scores: 'Music scores'
+      video: 'Video recordings',
+    }
+    */
+  },
+
   baseUri () {
     return URI();
     /* example override implementation:
@@ -47,7 +60,7 @@ module.exports = stampit()
     return this.baseUri();
   },
 
-  uriFor (search, scope, field) {
+  uriFor (search, scope, field, format) {
     if (!search) {
       return [
         this.emptySearchWarning,
@@ -70,6 +83,14 @@ module.exports = stampit()
         params['field'] = field;
       } else {
         warnings.push(this.badFieldWarning + `"${field}"`);
+      }
+    }
+
+    if (format) {
+      if (format in this.formats()) {
+        params['format'] = format;
+      } else {
+        warnings.push(this.badFormatWarning + `"${format}"`);
       }
     }
 

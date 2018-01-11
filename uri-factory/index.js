@@ -12,7 +12,7 @@ module.exports = stampit()
         reject(new InvalidArgumentError(`no plugin defined for target '${target}'`));
       }
       const plugin = factory[target];
-      resolve(plugin.uriFor(params.search, params.scope, params.field));
+      resolve(plugin.uriFor(params.search, params.scope, params.field, params.format));
     });
   },
 }).init(function () {

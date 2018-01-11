@@ -192,6 +192,11 @@ implementation returns:
 Returns an array or object that defines valid scopes for the target search engine. Because many search engines do not support scopes, the provided implementation returns
 an empty object. Optional.
 
+##### formats()
+
+Returns an array or object the defines valid formats or material types for the target search engine. Because many search engines do not support formats, the provided
+implementation returns an empty object. Optional.
+
 ##### emptySearchWarning
 
 This property provides a string warning for a missing search expression. The provided default is 'Missing or empty search expression.' Optional.
