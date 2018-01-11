@@ -27,14 +27,16 @@ http://primo.lib.umn.edu/primo_library/libweb/action/dlSearch.do?institution=TWI
 		- [Example Plugins](#example-plugins)
 		- [Re-usable Plugin Components](#re-usable-plugin-components)
 		- [Plugin API](#plugin-api)
-			- [uriFor([search] [,scope] [,field])](#uriforsearch-scope-field)
+			- [uriFor([search] [,scope] [,field] [,format])](#uriforsearch-scope-field-format)
 			- [baseUri()](#baseuri)
 			- [emptySearchUri()](#emptysearchuri)
 			- [fields()](#fields)
 			- [scopes()](#scopes)
+			- [formats()](#formats)
 			- [emptySearchWarning](#emptysearchwarning)
 			- [badScopeWarning](#badscopewarning)
 			- [badFieldWarning](#badfieldwarning)
+			- [badFormatWarning](#badformatwarning)
 	- [Sessions](#sessions)
 	- [Logging](#logging)
 		- [redirectLogEvent(ctx)](#redirectlogeventctx)
@@ -79,6 +81,7 @@ Janus accepts only GET requests, and recognizes these parameters:
 * `search`
 * `scope`
 * `field`
+* `format`
 
 Any unrecognized parameters will be ignored.
 
@@ -98,6 +101,8 @@ value is invalid, Janus will still redirect, ignoring the `scope`, and log a war
 * `subject`
 
 Any other `field` value will cause Janus to ignore it and log a warning.
+
+`format` restricts the search to specific material types or formats available via the `target`. If a `format` is value invalid, Janus will ignore it and log a warning.
 
 ### Application Factory
 
@@ -156,7 +161,7 @@ Janus provides two re-usable plugin components, both in the `uri-factory/` direc
 
 See `uri-factory/plugin.js` for base and example implementations of these methods and properties.
 
-##### uriFor([search] [,scope] [,field])
+##### uriFor([search] [,scope] [,field] [,format])
 
 Returns an array where the first element is a string, which should contain any warnings associated with missing search expressions or invalid scopes or fields,
 and the second element is an ojbect with an `href()` method, which must return a string representation of the generated redirect URI. `uriFor()` must never throw.
@@ -171,7 +176,7 @@ Returns an object that other plugin methods can modify to generate redirect URIs
 
 ##### emptySearchUri()
 
-Because [uriFor()](#uriforsearch-scope-field) must never throw, it can be helpful to define in one place what URI to use when the user supplies no search expression.
+Because [uriFor()](#uriforsearch-scope-field-format) must never throw, it can be helpful to define in one place what URI to use when the user supplies no search expression.
 Often this URI will be the same as the base URI, so the provided implementation just returns [baseUri()](#baseuri). Optional.
 
 ##### fields()
@@ -208,6 +213,10 @@ This property provides a warning for an invalid scope. The provided default is '
 ##### badFieldWarning
 
 This property provides a warning for an invalid field. The provided default is 'Unrecognized field: '. Optional.
+
+##### badFormatWarning
+
+This property provides a warning for an invalid format. The provided default is 'Unrecognized format: '. Optional.
 
 ### Sessions
 
