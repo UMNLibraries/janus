@@ -41,10 +41,10 @@
   "dependencies": {
     "bluebird": "^2.9.34",
     "bunyan": "^1.8.1",
-    "koa": "next",
+    "koa": "^2.6.1",
     "koa-convert": "^1.2.0",
-    "koa-favicon": "next",
-    "koa-router": "next",
+    "koa-favicon": "^2.0.1",
+    "koa-router": "^7.4.0",
     "koa-session": "^3.3.1",
     "require-all": "^2.0.0",
     "stampit": "^2.1.1",
