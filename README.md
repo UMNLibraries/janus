@@ -42,8 +42,9 @@ http://primo.lib.umn.edu/primo_library/libweb/action/dlSearch.do?institution=TWI
 		- [redirectLogEvent(ctx)](#redirectlogeventctx)
 - [Install](#install)
 - [Test](#test)
+	- [Lint](#lint)
 	- [Integration Tests](#integration-tests)
-- [Lint](#lint)
+	- [Unit Tests](#unit-tests)
 
 ## Quick Start
 
@@ -287,35 +288,47 @@ Install with npm. In package.json:
 
 ## Test
 
-Run all unit tests:
+To run the linter and all unit tests:
 
 ```
 npm test
 ```
 
-Run a single unit test by invoking [tape](https://github.com/substack/tape) directly:
+### Lint
+
+We use [standardjs](https://standardjs.com/) for linting. To lint all files:
 
 ```
-node_modules/.bin/tape test/factory.js
+npx standard
+```
+
+To automatically fix any errors that can be fixed automatically:
+
+```
+npx standard --fix
+```
+
+To lint a single file, e.g., `index.js`:
+
+```
+npx standard index.js
 ```
 
 ### Integration Tests
 
-Some tests make HTTP requests to real web services. To run those tests, set the `RUN_INTEGRATION_TESTS` environment variable to a true value.
-The default value is false.
+Some unit tests make HTTP requests to real web services. To run those tests, set the `RUN_INTEGRATION_TESTS` environment variable to a true value. The default value is false. This works for `npm test` and all commands described below.
 
-## Lint
+### Unit Tests
 
-Lint all files:
-
-```
-npm run lint
-```
-
-Lint a single file by invoking [ESLint](http://eslint.org/) directly:
+We use [tape](https://github.com/substack/tape) for unit tests. To run all unit tests:
 
 ```
-node_modules/.bin/eslint index.js
+npx tape test/*.js
 ```
 
-If `npm run lint` fails, invoking ESLint directly may be necessary to see the error messages.
+To run a single unit test file, e.g., `test/factory.js`:
+
+```
+npx tape test/factory.js
+```
+
