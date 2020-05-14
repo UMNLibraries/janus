@@ -1,16 +1,13 @@
 'use strict'
 const stampit = require('stampit')
-const Bluebird = require('bluebird')
-const co = Bluebird.coroutine
-const request = Bluebird.promisifyAll(require('request'))
-Bluebird.longStackTraces()
+const got = require('got')
 
 module.exports = stampit()
   .props({
     runIntegrationTests: false
   })
   .methods({
-    baseUri: co(function * (t, plugin, expectedHref) {
+    baseUri: async function (t, plugin, expectedHref) {
       const uri = plugin.baseUri()
 
       t.equal(
@@ -20,14 +17,14 @@ module.exports = stampit()
       )
 
       if (this.runIntegrationTests) {
-        const [response] = yield request.getAsync(uri.href())
+        const response = await got(uri.href())
         t.equal(response.statusCode, 200, '...and request for baseUri href is successful')
       }
 
       t.end()
-    }),
+    },
 
-    emptySearchUri: co(function * (t, plugin, expectedHref) {
+    emptySearchUri: async function (t, plugin, expectedHref) {
       const uri = plugin.emptySearchUri()
 
       t.equal(
@@ -37,12 +34,12 @@ module.exports = stampit()
       )
 
       if (this.runIntegrationTests) {
-        const [response] = yield request.getAsync(uri.href())
+        const response = await got(uri.href())
         t.equal(response.statusCode, 200, '...and request for emptySearchUri href is successful')
       }
 
       t.end()
-    }),
+    },
 
     missingSearchArgs: function (t, plugin, testCases) {
       for (const argumentStates in testCases) {
@@ -80,7 +77,7 @@ module.exports = stampit()
       t.end()
     },
 
-    validSearchArgs: co(function * (t, plugin, testCases, getResultCount) {
+    validSearchArgs: async function (t, plugin, testCases, getResultCount) {
       for (const expectedHref in testCases) {
         const args = testCases[expectedHref]
         const [warning, uri] = plugin.uriFor(args.search, args.scope, args.field, args.format)
@@ -90,15 +87,15 @@ module.exports = stampit()
         t.false(warning, '...and no warning returned...')
 
         if (this.runIntegrationTests) {
-          const [response, html] = yield request.getAsync(href)
+          const response = await got(href)
           t.equal(response.statusCode, 200, '...and request for href (' + href + ') is successful...')
-          const count = getResultCount(html)
+          const count = getResultCount(response.body)
           t.ok((count > 0), '...and request for href (' + href + ') returns 1 or more (' + count + ') records')
         }
       }
 
       t.end()
-    })
+    }
   })
   .init(function () {
     if (process.env.RUN_INTEGRATION_TESTS) {

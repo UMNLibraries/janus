@@ -4,11 +4,9 @@ const stampit = require('stampit')
 const Koa = require('koa')
 const favicon = require('koa-favicon')
 const router = require('koa-router')()
-const co = require('bluebird').coroutine
 const bunyan = require('bunyan')
 const uuid = require('uuid')
 const session = require('koa-session')
-const convert = require('koa-convert')
 const InvalidArgumentError = require(path.resolve(__dirname, 'invalid-arg-error'))
 
 module.exports = stampit()
@@ -75,9 +73,9 @@ module.exports = stampit()
     const defaultRedirectLogEvent = this.defaultRedirectLogEvent
     const redirectLogEvent = this.redirectLogEvent
 
-    router.get(this.uriPathPrefix, co(function * redirect (ctx, next) {
-      yield next()
-      const [warning, uri] = yield factory.uriFor(ctx.request.query)
+    router.get(this.uriPathPrefix, async function redirect (ctx, next) {
+      await next()
+      const [warning, uri] = await factory.uriFor(ctx.request.query)
       ctx.status = 302
       ctx.redirect(uri.href())
       if (warning) {
@@ -85,18 +83,18 @@ module.exports = stampit()
       } else {
         redirectLogger.info({ event: redirectLogEvent(ctx, defaultRedirectLogEvent(ctx)) }, 'ok')
       }
-    }))
+    })
 
     const app = new Koa()
     app
       .use(favicon(this.favicon))
-      .use(convert(session(this.sessionOpts, app)))
-      .use(co(function * session (ctx, next) {
+      .use(session(this.sessionOpts, app))
+      .use(async function session (ctx, next) {
         if (!ctx.session.id) {
-          ctx.session.id = yield sessionId(ctx)
+          ctx.session.id = await sessionId(ctx)
         }
-        yield next()
-      }))
+        await next()
+      })
       .use(router.routes())
       .use(router.allowedMethods())
       .on('error', (err, ctx) => {
