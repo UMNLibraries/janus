@@ -1,29 +1,29 @@
-'use strict';
-const stampit = require('stampit');
-const URI = require('urijs');
-const plugin = require('../../uri-factory/plugin');
+'use strict'
+const stampit = require('stampit')
+const URI = require('urijs')
+const plugin = require('../../uri-factory/plugin')
 
 const bar = stampit()
-.methods({
-  fields () { return {}; },
-  baseUri () {
-    return URI({
-      protocol: 'https',
-      hostname: 'bar.com',
-    });
-  },
-  uriFor (search, scope, field) {
-    if (!search) {
+  .methods({
+    fields () { return {} },
+    baseUri () {
+      return URI({
+        protocol: 'https',
+        hostname: 'bar.com'
+      })
+    },
+    uriFor (search, scope, field) {
+      if (!search) {
+        return [
+          this.emptySearchWarning,
+          this.emptySearchUri()
+        ]
+      }
       return [
-        this.emptySearchWarning,
-        this.emptySearchUri(),
-      ];
+        '',
+        this.baseUri().addQuery({ search: search })
+      ]
     }
-    return [
-      '',
-      this.baseUri().addQuery({search: search}),
-    ];
-  },
-});
+  })
 
-module.exports = plugin.compose(bar);
+module.exports = plugin.compose(bar)
