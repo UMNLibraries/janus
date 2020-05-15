@@ -65,15 +65,17 @@ module.exports = stampit()
       return logEvent
     }
   })
-  .init(function () {
-    const factory = require(path.resolve(__dirname, 'uri-factory/'))(this.uriFactoryPlugins)
+  .init(function (params) {
+    const factory = require(path.resolve(__dirname, 'uri-factory/'))(params.uriFactoryPlugins)
     const sessionId = this.sessionId
     const redirectLogger = this.redirectLogger()
+    this.errorLog = params.errorLog
     const errorLogger = this.errorLogger()
+    this.redirectLog = params.redirectLog
     const defaultRedirectLogEvent = this.defaultRedirectLogEvent
     const redirectLogEvent = this.redirectLogEvent
 
-    router.get(this.uriPathPrefix, async function redirect (ctx, next) {
+    router.get(params.uriPathPrefix, async function redirect (ctx, next) {
       await next()
       const [warning, uri] = await factory.uriFor(ctx.request.query)
       ctx.status = 302
