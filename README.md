@@ -50,11 +50,13 @@ http://primo.lib.umn.edu/primo_library/libweb/action/dlSearch.do?institution=TWI
 
 One way to quickly try Janus:
 
-1. Install [Node.js](https://nodejs.org/) >= 6.0.0.
+1. Install [Node.js](https://nodejs.org/). Choose an appropriate version based on the `engines` value in this project's `package.json`.
 
 2. `git clone` this repo.
 
-3. In the repo directory, use Node.js to run this code:
+3. `npm install`
+
+4. In the repo directory, use Node.js to run this code:
 ```javascript
 'use strict';
 const janus = require('./');
@@ -65,7 +67,7 @@ const app = janus({
 app.listen(3000);
 ```
 
-4. Make an HTTP GET request (e.g. in a web browser) for: http://localhost:3000?target=pubmed&search=neoplasm
+5. Make an HTTP GET request (e.g. in a web browser) for: http://localhost:3000?target=pubmed&search=neoplasm
 
 Janus should write a log message to STDOUT, and redirect the request to PubMed, which should respond with search results for "neoplasm".
 
@@ -278,13 +280,19 @@ app.listen(3000);
 
 ## Install
 
-Install with npm. In package.json:
+Install with npm. In package.json, include something like...
 
 ```json
   "dependencies": {
-    "@nihiliad/janus": "^0.0.0"
+    "@nihiliad/janus": "^2.0.0"
   }
 ```
+
+...where version based on the `version` value in this project's `package.json`. Then `npm install`.
+
+### Missing Dependencies of Dev Dependencies
+
+Sometimes `npm install` has not installed dependencies of packages in `devDependencies`, e.g., `eslint`, in `package.json`. If this happens, running `npm install --save-dev` should fix it.
 
 ## Test
 
@@ -331,4 +339,5 @@ To run a single unit test file, e.g., `test/factory.js`:
 ```
 npx tape test/factory.js
 ```
+
 
