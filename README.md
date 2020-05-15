@@ -42,18 +42,21 @@ http://primo.lib.umn.edu/primo_library/libweb/action/dlSearch.do?institution=TWI
 		- [redirectLogEvent(ctx)](#redirectlogeventctx)
 - [Install](#install)
 - [Test](#test)
+	- [Lint](#lint)
 	- [Integration Tests](#integration-tests)
-- [Lint](#lint)
+	- [Unit Tests](#unit-tests)
 
 ## Quick Start
 
 One way to quickly try Janus:
 
-1. Install [Node.js](https://nodejs.org/) >= 6.0.0.
+1. Install [Node.js](https://nodejs.org/). Choose an appropriate version based on the `engines` value in this project's `package.json`.
 
 2. `git clone` this repo.
 
-3. In the repo directory, use Node.js to run this code:
+3. `npm install`
+
+4. In the repo directory, use Node.js to run this code:
 ```javascript
 'use strict';
 const janus = require('./');
@@ -64,7 +67,7 @@ const app = janus({
 app.listen(3000);
 ```
 
-4. Make an HTTP GET request (e.g. in a web browser) for: http://localhost:3000?target=pubmed&search=neoplasm
+5. Make an HTTP GET request (e.g. in a web browser) for: http://localhost:3000?target=pubmed&search=neoplasm
 
 Janus should write a log message to STDOUT, and redirect the request to PubMed, which should respond with search results for "neoplasm".
 
@@ -277,45 +280,64 @@ app.listen(3000);
 
 ## Install
 
-Install with npm. In package.json:
+Install with npm. In package.json, include something like...
 
 ```json
   "dependencies": {
-    "@nihiliad/janus": "^0.0.0"
+    "@nihiliad/janus": "^2.0.0"
   }
 ```
 
+...where version based on the `version` value in this project's `package.json`. Then `npm install`.
+
+### Missing Dependencies of Dev Dependencies
+
+Sometimes `npm install` has not installed dependencies of packages in `devDependencies`, e.g., `eslint`, in `package.json`. If this happens, running `npm install --save-dev` should fix it.
+
 ## Test
 
-Run all unit tests:
+To run the linter and all unit tests:
 
 ```
 npm test
 ```
 
-Run a single unit test by invoking [tape](https://github.com/substack/tape) directly:
+### Lint
+
+We use [standardjs](https://standardjs.com/) for linting. To lint all files:
 
 ```
-node_modules/.bin/tape test/factory.js
+npx standard
+```
+
+To automatically fix any errors that can be fixed automatically:
+
+```
+npx standard --fix
+```
+
+To lint a single file, e.g., `index.js`:
+
+```
+npx standard index.js
 ```
 
 ### Integration Tests
 
-Some tests make HTTP requests to real web services. To run those tests, set the `RUN_INTEGRATION_TESTS` environment variable to a true value.
-The default value is false.
+Some unit tests make HTTP requests to real web services. To run those tests, set the `RUN_INTEGRATION_TESTS` environment variable to a true value. The default value is false. This works for `npm test` and all commands described below.
 
-## Lint
+### Unit Tests
 
-Lint all files:
-
-```
-npm run lint
-```
-
-Lint a single file by invoking [ESLint](http://eslint.org/) directly:
+We use [tape](https://github.com/substack/tape) for unit tests. To run all unit tests:
 
 ```
-node_modules/.bin/eslint index.js
+npx tape test/*.js
 ```
 
-If `npm run lint` fails, invoking ESLint directly may be necessary to see the error messages.
+To run a single unit test file, e.g., `test/factory.js`:
+
+```
+npx tape test/factory.js
+```
+
+

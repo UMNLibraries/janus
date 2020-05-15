@@ -15,18 +15,13 @@ module.exports = stampit()
         resolve(plugin.uriFor(params.search, params.scope, params.field, params.format))
       })
     }
-  }).init(function () {
+  }).init(function (plugins) {
     const factory = this
-    for (const pluginName of Reflect.ownKeys(factory)) {
-      const lcPluginName = pluginName.toLowerCase()
-      if (lcPluginName !== pluginName) {
-        factory[lcPluginName] = factory[pluginName]
-        delete factory[pluginName]
-      }
-      const plugin = factory[lcPluginName]()
+    for (const [pluginName, pluginFactory] of Object.entries(plugins)) {
+      const plugin = pluginFactory()
       if (!(Reflect.has(plugin, 'uriFor') && (Reflect.getPrototypeOf(plugin.uriFor) === Function.prototype))) {
-        throw new InvalidArgumentError(`plugin "${lcPluginName}" has no uriFor() method`)
+        throw new InvalidArgumentError(`plugin "${pluginName}" has no uriFor() method`)
       }
-      factory[lcPluginName] = plugin
+      factory[pluginName.toLowerCase()] = plugin
     }
   })

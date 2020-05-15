@@ -1,9 +1,0 @@
-extends: standard
-plugins:
-  - standard
-env:
-  node: true
-rules:
-  comma-dangle: "off"
-  generator-star-spacing: ["error", {"before": true, "after": false}]
-  semi: ["error", "always"]

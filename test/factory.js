@@ -1,6 +1,5 @@
 'use strict'
 const test = require('blue-tape').test
-const co = require('bluebird').coroutine
 const stampit = require('stampit')
 const fooPlugin = require('./fixtures/foo-plugin')
 const barPlugin = require('./fixtures/bar-plugin')
@@ -9,7 +8,7 @@ const InvalidArgumentError = require('../invalid-arg-error')
 
 test('factory invalid plugins', function (t) {
   try {
-    const factory = metaFactory({ foo: {} })
+    metaFactory({ foo: {} })
   } catch (e) {
     t.ok(
       (e instanceof TypeError),
@@ -22,7 +21,7 @@ test('factory invalid plugins', function (t) {
   }
 
   try {
-    const factory = metaFactory({ foo: new Function() })
+    metaFactory({ foo: function () { return 'not an object' } })
   } catch (e) {
     t.ok(
       (e instanceof TypeError),
@@ -35,7 +34,7 @@ test('factory invalid plugins', function (t) {
   }
 
   try {
-    const factory = metaFactory({ foo: stampit() })
+    metaFactory({ foo: stampit() })
   } catch (e) {
     t.ok(
       (e instanceof InvalidArgumentError),
@@ -53,46 +52,46 @@ test('factory invalid plugins', function (t) {
   t.end()
 })
 
-test('factory uriFor()', co(function * (t) {
+test('factory uriFor()', async function (t) {
   const factory = metaFactory({
     FOO: fooPlugin,
     bar: barPlugin
   })
 
-  let [fooWarning, fooUri] = yield factory.uriFor({ target: 'FOO', search: 'manchoo', scope: 'business', field: 'author', format: 'audio' })
+  let fooUriResult = await factory.uriFor({ target: 'FOO', search: 'manchoo', scope: 'business', field: 'author', format: 'audio' })
   t.equal(
-    fooUri.href(),
+    fooUriResult[1].href(),
     'https://foo.com?search=manchoo&scope=business&field=author&format=audio',
     'expected href for target "FOO"'
-  );
+  )
 
-  [fooWarning, fooUri] = yield factory.uriFor({ target: 'foo', search: 'manchoo' })
+  fooUriResult = await factory.uriFor({ target: 'foo', search: 'manchoo' })
   t.equal(
-    fooUri.href(),
+    fooUriResult[1].href(),
     'https://foo.com?search=manchoo',
     'target is case-insensitive: factory param "FOO" works with uriFor() param "foo"'
   )
 
-  let [barWarning, barUri] = yield factory.uriFor({ target: 'bar', search: 'baz' })
+  let barUriResult = await factory.uriFor({ target: 'bar', search: 'baz' })
   t.equal(
-    barUri.href(),
+    barUriResult[1].href(),
     'https://bar.com?search=baz',
     'expected href for target "bar"'
-  );
+  )
 
-  [barWarning, barUri] = yield factory.uriFor({ target: 'BAR', search: 'baz' })
+  barUriResult = await factory.uriFor({ target: 'BAR', search: 'baz' })
   t.equal(
-    barUri.href(),
+    barUriResult[1].href(),
     'https://bar.com?search=baz',
     'target is case-insensitive: factory param "bar" works with uriFor() param "BAR"'
   )
 
   try {
-    const [bogusWarning, bogusUri] = yield factory.uriFor({ target: 'bogus', search: 'bogus' })
+    await factory.uriFor({ target: 'bogus', search: 'bogus' })
   } catch (e) {
     t.ok(
       (e instanceof InvalidArgumentError),
       'uriFor() throws an InvalidArgumentError for an unknown target'
     )
   }
-}))
+})
