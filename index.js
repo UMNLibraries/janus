@@ -28,12 +28,12 @@ module.exports = stampit()
       })
     },
 
-    errorLogger () {
-      return bunyan.createLogger(this.errorLog)
+    errorLogger (errorLog) {
+      return bunyan.createLogger(errorLog ? errorLog : this.errorLog)
     },
 
-    redirectLogger () {
-      return bunyan.createLogger(this.redirectLog)
+    redirectLogger (redirectLog) {
+      return bunyan.createLogger(redirectLog ? redirectLog : this.redirectLog)
     },
 
     redirectLogEvent (ctx, defaultEvent) {
@@ -68,10 +68,8 @@ module.exports = stampit()
   .init(function (params) {
     const factory = require(path.resolve(__dirname, 'uri-factory/'))(params.uriFactoryPlugins)
     const sessionId = this.sessionId
-    const redirectLogger = this.redirectLogger()
-    this.errorLog = params.errorLog
-    const errorLogger = this.errorLogger()
-    this.redirectLog = params.redirectLog
+    const errorLogger = this.errorLogger(params.errorLog)
+    const redirectLogger = this.redirectLogger(params.redirectLog)
     const defaultRedirectLogEvent = this.defaultRedirectLogEvent
     const redirectLogEvent = this.redirectLogEvent
 
