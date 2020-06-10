@@ -29,11 +29,11 @@ module.exports = stampit()
     },
 
     errorLogger (errorLog) {
-      return bunyan.createLogger(errorLog ? errorLog : this.errorLog)
+      return bunyan.createLogger(errorLog || this.errorLog)
     },
 
     redirectLogger (redirectLog) {
-      return bunyan.createLogger(redirectLog ? redirectLog : this.redirectLog)
+      return bunyan.createLogger(redirectLog || this.redirectLog)
     },
 
     redirectLogEvent (ctx, defaultEvent) {
