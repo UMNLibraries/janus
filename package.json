@@ -1,6 +1,6 @@
 {
   "name": "@nihiliad/janus",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Common target for all library website search forms. Configurable, extensible, re-usable.",
   "main": "index.js",
   "scripts": {
