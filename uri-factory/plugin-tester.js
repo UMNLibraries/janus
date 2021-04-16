@@ -1,6 +1,7 @@
 'use strict'
 const stampit = require('stampit')
 const got = require('got')
+const playwright = require('playwright')
 
 module.exports = stampit()
   .props({
@@ -87,10 +88,19 @@ module.exports = stampit()
         t.false(warning, '...and no warning returned...')
 
         if (this.runIntegrationTests) {
-          const response = await got(href)
-          t.equal(response.statusCode, 200, '...and request for href (' + href + ') is successful...')
-          const count = getResultCount(response.body)
+          const browser = await playwright.chromium.launch({
+            headless: true
+          })
+          const page = await browser.newPage()
+          const results = await Promise.all([
+            page.goto(href),
+            page.waitForEvent('response', response => response.request().resourceType() === 'document')
+          ])
+          const response = results.pop()
+          t.equal(response.status(), 200, '...and request for href (' + href + ') is successful...')
+          const count = await getResultCount(page)
           t.ok((count > 0), '...and request for href (' + href + ') returns 1 or more (' + count + ') records')
+          await browser.close()
         }
       }
 

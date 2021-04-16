@@ -10,10 +10,7 @@ const pubmed = stampit()
       return URI({
         protocol: 'https',
         hostname: 'www.ncbi.nlm.nih.gov'
-      }).segmentCoded([
-        'sites',
-        'entrez'
-      ]).query({
+      }).query({
         db: 'pubmed',
         otool: 'janus-tests'
       })
