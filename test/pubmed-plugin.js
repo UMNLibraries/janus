@@ -53,3 +53,7 @@ test('pubmed-plugin uriFor() valid "search" arguments', function (t) {
 
   tester.validSearchArgs(t, plugin, testCases, getResultCount)
 })
+
+test('cleanup', async function (t) {
+  await tester.cleanup()
+})

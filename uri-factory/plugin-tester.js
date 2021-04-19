@@ -1,6 +1,5 @@
 'use strict'
 const stampit = require('stampit')
-const got = require('got')
 const playwright = require('playwright')
 
 module.exports = stampit()
@@ -9,34 +8,36 @@ module.exports = stampit()
   })
   .methods({
     baseUri: async function (t, plugin, expectedHref) {
-      const uri = plugin.baseUri()
+      const href = plugin.baseUri().href()
 
       t.equal(
-        uri.href(),
+        href,
         expectedHref,
         'expected baseUri href (' + expectedHref + ')...'
       )
 
       if (this.runIntegrationTests) {
-        const response = await got(uri.href())
-        t.equal(response.statusCode, 200, '...and request for baseUri href is successful')
+        const results = await this.gotoPage(href)
+        const response = results.pop()
+        t.equal(response.status(), 200, '...and request for baseUri href is successful...')
       }
 
       t.end()
     },
 
     emptySearchUri: async function (t, plugin, expectedHref) {
-      const uri = plugin.emptySearchUri()
+      const href = plugin.emptySearchUri().href()
 
       t.equal(
-        uri.href(),
+        href,
         expectedHref,
         'expected emptySearchUri href (' + expectedHref + ')...'
       )
 
       if (this.runIntegrationTests) {
-        const response = await got(uri.href())
-        t.equal(response.statusCode, 200, '...and request for emptySearchUri href is successful')
+        const results = await this.gotoPage(href)
+        const response = results.pop()
+        t.equal(response.status(), 200, '...and request for emptySearchUri href is successful...')
       }
 
       t.end()
@@ -88,23 +89,37 @@ module.exports = stampit()
         t.false(warning, '...and no warning returned...')
 
         if (this.runIntegrationTests) {
-          const browser = await playwright.chromium.launch({
-            headless: true
-          })
-          const page = await browser.newPage()
-          const results = await Promise.all([
-            page.goto(href),
-            page.waitForEvent('response', response => response.request().resourceType() === 'document')
-          ])
-          const response = results.pop()
+          const [page, response] = await this.gotoPage(href)
           t.equal(response.status(), 200, '...and request for href (' + href + ') is successful...')
           const count = await getResultCount(page)
           t.ok((count > 0), '...and request for href (' + href + ') returns 1 or more (' + count + ') records')
-          await browser.close()
         }
       }
 
       t.end()
+    },
+
+    browser: async function () {
+      if (!('_browser' in this)) {
+        this._browser = await playwright.chromium.launch({ headless: true })
+      }
+      return this._browser
+    },
+
+    gotoPage: async function (href) {
+      const browser = await this.browser()
+      const page = await browser.newPage()
+      const results = await Promise.all([
+        page.goto(href),
+        page.waitForEvent('response', response => response.request().resourceType() === 'document')
+      ])
+      const response = results.pop()
+      return [page, response]
+    },
+
+    cleanup: async function () {
+      const browser = await this.browser()
+      await browser.close()
     }
   })
   .init(function () {
