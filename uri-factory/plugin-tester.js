@@ -99,16 +99,12 @@ module.exports = stampit()
       t.end()
     },
 
-    browser: async function () {
-      if (!('_browser' in this)) {
-        this._browser = await playwright.chromium.launch({ headless: true })
-      }
-      return this._browser
+    setup: async function () {
+      this.browser = await playwright.chromium.launch({ headless: true })
     },
 
     gotoPage: async function (href) {
-      const browser = await this.browser()
-      const page = await browser.newPage()
+      const page = await this.browser.newPage()
       const results = await Promise.all([
         page.goto(href),
         page.waitForEvent('response', response => response.request().resourceType() === 'document')
@@ -117,9 +113,8 @@ module.exports = stampit()
       return [page, response]
     },
 
-    cleanup: async function () {
-      const browser = await this.browser()
-      await browser.close()
+    teardown: async function () {
+      await this.browser.close()
     }
   })
   .init(function () {

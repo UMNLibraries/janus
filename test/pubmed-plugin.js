@@ -3,6 +3,10 @@ const test = require('tape')
 const plugin = require('./fixtures/pubmed-plugin')()
 const tester = require('../uri-factory/plugin-tester')({ runIntegrationTests: false })
 
+test('setup', async function (t) {
+  await tester.setup()
+})
+
 test('pubmed-plugin scopes override', function (t) {
   t.deepEqual(plugin.scopes(), {}, 'scopes correctly overridden with an empty object')
   t.end()
@@ -54,6 +58,6 @@ test('pubmed-plugin uriFor() valid "search" arguments', function (t) {
   tester.validSearchArgs(t, plugin, testCases, getResultCount)
 })
 
-test('cleanup', async function (t) {
-  await tester.cleanup()
+test('teardown', async function (t) {
+  await tester.teardown()
 })
