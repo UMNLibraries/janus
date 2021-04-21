@@ -17,7 +17,7 @@ module.exports = stampit()
       )
 
       if (this.runIntegrationTests) {
-        const results = await this.gotoPage(href)
+        const results = await this.gotoPage(href).catch(e => { console.error(e) })
         const response = results.pop()
         t.equal(response.status(), 200, '...and request for baseUri href is successful...')
       }
@@ -35,7 +35,7 @@ module.exports = stampit()
       )
 
       if (this.runIntegrationTests) {
-        const results = await this.gotoPage(href)
+        const results = await this.gotoPage(href).catch(e => { console.error(e) })
         const response = results.pop()
         t.equal(response.status(), 200, '...and request for emptySearchUri href is successful...')
       }
@@ -89,9 +89,9 @@ module.exports = stampit()
         t.false(warning, '...and no warning returned...')
 
         if (this.runIntegrationTests) {
-          const [page, response] = await this.gotoPage(href)
+          const [page, response] = await this.gotoPage(href).catch(e => { console.error(e) })
           t.equal(response.status(), 200, '...and request for href (' + href + ') is successful...')
-          const count = await getResultCount(page)
+          const count = await getResultCount(page).catch(e => { console.error(e) })
           t.ok((count > 0), '...and request for href (' + href + ') returns 1 or more (' + count + ') records')
         }
       }
@@ -100,21 +100,21 @@ module.exports = stampit()
     },
 
     setup: async function () {
-      this.browser = await playwright.chromium.launch({ headless: true })
+      this.browser = await playwright.chromium.launch({ headless: true }).catch(e => { console.error(e) })
     },
 
     gotoPage: async function (href) {
-      const page = await this.browser.newPage()
+      const page = await this.browser.newPage().catch(e => { console.error(e) })
       const results = await Promise.all([
         page.goto(href),
         page.waitForEvent('response', response => response.request().resourceType() === 'document')
-      ])
+      ]).catch(e => { console.error(e) })
       const response = results.pop()
       return [page, response]
     },
 
     teardown: async function () {
-      await this.browser.close()
+      await this.browser.close().catch(e => { console.error(e) })
     }
   })
   .init(function () {

@@ -48,11 +48,10 @@ test('pubmed-plugin uriFor() valid "search" arguments', function (t) {
   }
 
   async function getResultCount (page) {
-    const count = await page.$eval(
+    return await page.$eval(
       '#search-results > .results-amount-container > .results-amount > .value',
-      valueElem => { return valueElem.innerText.replace(/,/g, '') }
+      elem => { return elem.textContent.replace(/,/g, '') }
     )
-    return count
   }
 
   tester.validSearchArgs(t, plugin, testCases, getResultCount)
