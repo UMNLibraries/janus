@@ -1,5 +1,5 @@
 'use strict'
-const test = require('blue-tape').test
+const test = require('tape')
 const stampit = require('stampit')
 const fooPlugin = require('./fixtures/foo-plugin')
 const barPlugin = require('./fixtures/bar-plugin')
