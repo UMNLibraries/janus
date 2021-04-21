@@ -29,7 +29,6 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "cheerio": "^0.22.0",
     "playwright": "^1.10.0",
     "standard": "^14.3.4",
     "tape": "^5.0.0"
