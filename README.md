@@ -11,9 +11,9 @@ other handling of the searches with a single code base.
 Janus uses a simple URI API for all search engines, which also makes search forms easier to
 write and maintain. For example, at UMN Libraries, Janus transforms this request...
 
-https://stacks.lib.umn.edu/janus?target=mncatdiscovery&search=darwin
+https://stacks.lib.umn.edu/janus?target=primo&search=darwin
 
-...into this MNCAT Discovery (Primo, our library catalog) request:
+...into this Primo request:
 
 http://primo.lib.umn.edu/primo_library/libweb/action/dlSearch.do?institution=TWINCITIES&vid=TWINCITIES&indx=1&dym=true&highlight=true&lang=eng&search_scope=mncat_discovery&query=any%2Ccontains%2Cdarwin
 
@@ -86,13 +86,11 @@ Janus accepts only GET requests, and recognizes these parameters:
 * `field`
 * `format`
 
-Any unrecognized parameters will be ignored.
+All parameter names are case-insensitive. Any unrecognized parameters will be ignored.
 
-`target` is the only required parameter, and the value, while case-insensitive, must map to a recognized [URI factory plugin](#uri-factory-plugins).
-If the `target` value is missing or invalid, Janus cannot redirect, and will return a 400 response.
+`target` is the only required parameter, and the value, while case-insensitive, must map to a recognized [URI factory plugin](#uri-factory-plugins). If the `target` value is missing or invalid, Janus cannot redirect, and will return a 400 response.
 
-`search` is the user's search expression. While not required, there is little value in redirecting a user to a search engine without it. If `search`
-is missing, Janus will redirect the user to the `target` such that no search will have been attempted yet, and log a warning.
+`search` is the user's search expression. While not required, there is little value in redirecting a user to a search engine without it. If `search` is missing, Janus will redirect the user to the `target` such that no search will have been attempted yet, and log a warning.
 
 `scope` restricts the `search` to a subset of items available via the `target`. Each plugin may define valid `scope` values. If a `scope`
 value is invalid, Janus will still redirect, ignoring the `scope`, and log a warning.
@@ -103,7 +101,7 @@ value is invalid, Janus will still redirect, ignoring the `scope`, and log a war
 * `title`
 * `subject`
 
-Any other `field` value will cause Janus to ignore it and log a warning.
+All field values are case-insensitive. Any other `field` value will cause Janus to ignore it and log a warning.
 
 `format` restricts the search to specific material types or formats available via the `target`. If a `format` is value invalid, Janus will ignore it and log a warning.
 
@@ -150,8 +148,7 @@ of the [URI API](#uri-api), and the values are plugins for those targets.
 For simple examples, see the `test/fixtures/*plugin.js` files in this repo. For more complex examples, see the
 [UMN Libraries plugins](https://github.com/UMNLibraries/janus-uri-factory-plugins).
 
-In most, if not all, cases, reading and modifying existing examples should be sufficient to create your own plugins. A basic understanding of
-stampit and [urijs](https://www.npmjs.com/package/urijs) would help, too.
+In most, if not all, cases, reading and modifying existing examples should be sufficient to create your own plugins. A basic understanding of stampit and [urijs](https://www.npmjs.com/package/urijs) would help, too.
 
 #### Re-usable Plugin Components
 
@@ -179,13 +176,11 @@ Returns an object that other plugin methods can modify to generate redirect URIs
 
 ##### emptySearchUri()
 
-Because [uriFor()](#uriforsearch-scope-field-format) must never throw, it can be helpful to define in one place what URI to use when the user supplies no search expression.
-Often this URI will be the same as the base URI, so the provided implementation just returns [baseUri()](#baseuri). Optional.
+Because [uriFor()](#uriforsearch-scope-field-format) must never throw, it can be helpful to define in one place what URI to use when the user supplies no search expression. Often this URI will be the same as the base URI, so the provided implementation just returns [baseUri()](#baseuri). Optional.
 
 ##### fields()
 
-Maps Janus field parameters to their analagous parameters in the target search engine. Optional. Because many search engines use the same parameter names, the provided
-implementation returns:
+Maps Janus field parameters to their analagous parameters in the target search engine. Optional. Because many search engines use the same parameter names, the provided implementation returns:
 
 ```javascript
 {
@@ -197,13 +192,11 @@ implementation returns:
 
 ##### scopes()
 
-Returns an array or object that defines valid scopes for the target search engine. Because many search engines do not support scopes, the provided implementation returns
-an empty object. Optional.
+Returns an array or object that defines valid scopes for the target search engine. Because many search engines do not support scopes, the provided implementation returns an empty object. Optional.
 
 ##### formats()
 
-Returns an array or object the defines valid formats or material types for the target search engine. Because many search engines do not support formats, the provided
-implementation returns an empty object. Optional.
+Returns an array or object the defines valid formats or material types for the target search engine. Because many search engines do not support formats, the provided implementation returns an empty object. Optional.
 
 ##### emptySearchWarning
 
@@ -223,9 +216,7 @@ This property provides a warning for an invalid format. The provided default is 
 
 ### Sessions
 
-Janus uses [koa-session](https://www.npmjs.com/package/koa-session) to assign each unique visitor a session ID, which it logs by default (see [Logging](#logging) below).
-The session IDs are RFC4122 version 1 UUIDs. To customize session ID creation, override the `sessionId()` method. It accepts one parameter, `ctx`, a Koa context object.
-It returns a promise, in case you want to generate IDs via some async process.
+Janus uses [koa-session](https://www.npmjs.com/package/koa-session) to assign each unique visitor a session ID, which it logs by default (see [Logging](#logging) below). The session IDs are RFC4122 version 1 UUIDs. To customize session ID creation, override the `sessionId()` method. It accepts one parameter, `ctx`, a Koa context object. It returns a promise, in case you want to generate IDs via some async process.
 
 One way to override this method when invoking Janus:
 
@@ -250,16 +241,11 @@ As described in [Application Factory](#application-factory) above, you can also 
 
 ### Logging
 
-Janus uses [Bunyan](https://www.npmjs.com/package/bunyan) for logging. If provided, Janus will pass the values of the `redirectLog` and `errorLog` properties to the
-[bunyan.createLogger()](https://www.npmjs.com/package/bunyan#constructor-api) constructor. If not provided, these values default to `{name: 'redirect'}` and `{name: 'error'}`,
-which will cause Bunyan to log to `stdout` and `stderr`, respectively. For more control, override the Janus `redirectLogger()` and/or `errorLogger()` methods, which
-create the Bunyan loggers.
+Janus uses [Bunyan](https://www.npmjs.com/package/bunyan) for logging. If provided, Janus will pass the values of the `redirectLog` and `errorLog` properties to the [bunyan.createLogger()](https://www.npmjs.com/package/bunyan#constructor-api) constructor. If not provided, these values default to `{name: 'redirect'}` and `{name: 'error'}`, which will cause Bunyan to log to `stdout` and `stderr`, respectively. For more control, override the Janus `redirectLogger()` and/or `errorLogger()` methods, which create the Bunyan loggers.
 
 #### redirectLogEvent(ctx)
 
-One of the most valuable features of Janus is logging metadata about each request. To control what metadata Janus logs, override the `redirectLogEvent()` method. It accepts
-two parameters, `ctx`, a Koa context object, and a `defaultEvent`, which you can modify to more easily customize what gets logged. It returns an object that Bunyan will include 
-in a redirect log message for the request. See `defaultRedirectLogEvent()` in `index.js` for the structure of the `defaultEvent`.
+One of the most valuable features of Janus is logging metadata about each request. To control what metadata Janus logs, override the `redirectLogEvent()` method. It accepts two parameters, `ctx`, a Koa context object, and a `defaultEvent`, which you can modify to more easily customize what gets logged. It returns an object that Bunyan will include in a redirect log message for the request. See `defaultRedirectLogEvent()` in `index.js` for the structure of the `defaultEvent`.
 
 One way to override this method when invoking Janus:
 
@@ -339,5 +325,3 @@ To run a single unit test file, e.g., `test/factory.js`:
 ```
 npx tape test/factory.js
 ```
-
-
