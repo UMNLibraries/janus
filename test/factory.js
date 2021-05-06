@@ -72,6 +72,13 @@ test('factory uriFor()', async function (t) {
     'target is case-insensitive: factory param "FOO" works with uriFor() param "foo"'
   )
 
+  fooUriResult = await factory.uriFor({ TARGET: 'foo', sEArch: 'baz', ScOpE: 'music', FIELD: 'author', FOrmAT: 'video' })
+  t.equal(
+    fooUriResult[1].href(),
+    'https://foo.com?search=baz&scope=music&field=author&format=video',
+    'all supported param names are case-insensitive'
+  )
+
   let barUriResult = await factory.uriFor({ target: 'bar', search: 'baz' })
   t.equal(
     barUriResult[1].href(),

@@ -40,8 +40,8 @@ module.exports = stampit()
       return defaultEvent
     },
 
-    defaultRedirectLogEvent (ctx) {
-      const logEvent = {
+    defaultRedirectLogEvent (ctx, supportedQueryParams) {
+      return {
         request: {
           method: ctx.request.method,
           url: ctx.request.url,
@@ -54,34 +54,36 @@ module.exports = stampit()
         user: {
           sessionId: ctx.session.id
         },
-        query: {
-        }
-      };
-      ['target', 'search', 'scope', 'field', 'format'].map(param => {
-        logEvent.query[param] = (ctx.request.query[param])
-          ? ctx.request.query[param]
-          : ''
-      })
-      return logEvent
+        query: supportedQueryParams
+      }
     }
   })
   .init(function (params) {
     const factory = require(path.resolve(__dirname, 'uri-factory/'))(params.uriFactoryPlugins)
-    const sessionId = this.sessionId
+    const sessionId = this.sessionId.bind(this)
     const errorLogger = this.errorLogger(params.errorLog)
     const redirectLogger = this.redirectLogger(params.redirectLog)
-    const defaultRedirectLogEvent = this.defaultRedirectLogEvent
-    const redirectLogEvent = this.redirectLogEvent
+    const defaultRedirectLogEvent = this.defaultRedirectLogEvent.bind(this)
+    const redirectLogEvent = this.redirectLogEvent.bind(this)
 
     router.get(params.uriPathPrefix, async function redirect (ctx, next) {
       await next()
-      const [warning, uri] = await factory.uriFor(ctx.request.query)
+      const queryParams = factory.normalizeQueryParams(ctx.request.query)
+      const supportedOnly = true
+      const supportedQueryParams = factory.normalizeQueryParams(queryParams, supportedOnly)
+      const [warning, uri] = await factory.uriFor(queryParams)
       ctx.status = 302
       ctx.redirect(uri.href())
       if (warning) {
-        redirectLogger.warn({ event: redirectLogEvent(ctx, defaultRedirectLogEvent(ctx)) }, warning)
+        redirectLogger.warn(
+          { event: redirectLogEvent(ctx, defaultRedirectLogEvent(ctx, supportedQueryParams)) },
+          warning
+        )
       } else {
-        redirectLogger.info({ event: redirectLogEvent(ctx, defaultRedirectLogEvent(ctx)) }, 'ok')
+        redirectLogger.info(
+          { event: redirectLogEvent(ctx, defaultRedirectLogEvent(ctx, supportedQueryParams)) },
+          'ok'
+        )
       }
     })
 
