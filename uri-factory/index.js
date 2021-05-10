@@ -3,9 +3,27 @@ const InvalidArgumentError = require('../invalid-arg-error')
 const stampit = require('stampit')
 
 module.exports = stampit()
+  .props({
+    supportedQueryParamNames: ['target', 'search', 'scope', 'field', 'format']
+  })
   .methods({
-    uriFor (params) {
+
+    normalizeQueryParams (rawParams, supportedOnly = false) {
+      const params = {}
+      for (const [key, value] of Object.entries(rawParams)) {
+        const lcKey = key.toLowerCase()
+        if (this.supportedQueryParamNames.includes(lcKey)) {
+          params[lcKey] = value
+        } else if (!supportedOnly) {
+          params[key] = value
+        }
+      }
+      return params
+    },
+
+    uriFor (rawParams) {
       const factory = this
+      const params = this.normalizeQueryParams(rawParams)
       return new Promise(function (resolve, reject) {
         const target = params.target ? params.target.toLowerCase() : params.target
         if (!Reflect.has(factory, target)) {

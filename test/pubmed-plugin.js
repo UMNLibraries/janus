@@ -1,8 +1,11 @@
 'use strict'
 const test = require('tape')
-const cheerio = require('cheerio')
 const plugin = require('./fixtures/pubmed-plugin')()
 const tester = require('../uri-factory/plugin-tester')({ runIntegrationTests: false })
+
+test('setup', async function (t) {
+  await tester.setup()
+})
 
 test('pubmed-plugin scopes override', function (t) {
   t.deepEqual(plugin.scopes(), {}, 'scopes correctly overridden with an empty object')
@@ -15,11 +18,11 @@ test('pubmed-plugin fields override', function (t) {
 })
 
 test('pubmed-plugin baseUri()', function (t) {
-  tester.baseUri(t, plugin, 'https://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&otool=janus-tests')
+  tester.baseUri(t, plugin, 'https://www.ncbi.nlm.nih.gov?db=pubmed&otool=janus-tests')
 })
 
 test('pubmed-plugin emptySearchUri()', function (t) {
-  tester.emptySearchUri(t, plugin, 'https://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&otool=janus-tests')
+  tester.emptySearchUri(t, plugin, 'https://www.ncbi.nlm.nih.gov?db=pubmed&otool=janus-tests')
 })
 
 test('pubmed-plugin uriFor() missing "search" arguments', function (t) {
@@ -37,18 +40,23 @@ test('pubmed-plugin uriFor() missing "search" arguments', function (t) {
 test('pubmed-plugin uriFor() valid "search" arguments', function (t) {
   // testCases map expected uri to uriFor() arguments
   const testCases = {
-    'https://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&otool=janus-tests&term=neoplasm': {
+    'https://www.ncbi.nlm.nih.gov?db=pubmed&otool=janus-tests&term=neoplasm': {
       search: 'neoplasm',
       scope: null,
       field: null
     }
   }
 
-  function getResultCount (html) {
-    const $ = cheerio.load(html)
-    const count = $('#resultcount').attr('value')
-    return count
+  async function getResultCount (page) {
+    return await page.$eval(
+      '#search-results > .results-amount-container > .results-amount > .value',
+      elem => { return elem.textContent.replace(/,/g, '') }
+    )
   }
 
   tester.validSearchArgs(t, plugin, testCases, getResultCount)
+})
+
+test('teardown', async function (t) {
+  await tester.teardown()
 })

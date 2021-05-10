@@ -79,8 +79,9 @@ module.exports = stampit()
       }
 
       if (field) {
-        if (field in this.fields()) {
-          params.field = field
+        const lcField = field.toLowerCase()
+        if (lcField in this.fields()) {
+          params.field = lcField
         } else {
           warnings.push(this.badFieldWarning + `"${field}"`)
         }

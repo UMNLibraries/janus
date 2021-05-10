@@ -1,5 +1,5 @@
 'use strict'
-const test = require('blue-tape').test
+const test = require('tape')
 const plugin = require('./fixtures/foo-plugin')()
 const tester = require('../uri-factory/plugin-tester')()
 tester.runIntegrationTests = false
