@@ -29,19 +29,19 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "playwright": "^1.10.0",
-    "standard": "^14.3.4",
-    "tape": "^5.0.0"
+    "playwright": "^1.12.3",
+    "standard": "^16.0.3",
+    "tape": "^5.2.2"
   },
   "dependencies": {
-    "bunyan": "^1.8.1",
-    "koa": "^2.11.0",
+    "bunyan": "^1.8.15",
+    "koa": "^2.13.1",
     "koa-favicon": "^2.1.0",
     "koa-router": "^7.4.0",
-    "koa-session": "^6.0.0",
-    "require-all": "^2.0.0",
-    "stampit": "^4.3.1",
-    "urijs": "^1.17.1",
-    "uuid": "^2.0.2"
+    "koa-session": "^6.2.0",
+    "require-all": "^2.2.0",
+    "stampit": "^4.3.2",
+    "urijs": "^1.19.7",
+    "uuid": "^2.0.3"
   }
 }
