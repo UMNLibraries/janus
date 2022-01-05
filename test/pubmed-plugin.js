@@ -49,7 +49,7 @@ test('pubmed-plugin uriFor() valid "search" arguments', function (t) {
 
   async function getResultCount (page) {
     return await page.$eval(
-      '#search-results > .results-amount-container > .results-amount > .value',
+      '#search-results > .top-wrapper > .results-amount-container > .results-amount > .value',
       elem => { return elem.textContent.replace(/,/g, '') }
     )
   }
