@@ -67,7 +67,7 @@ module.exports = stampit()
     const defaultRedirectLogEvent = this.defaultRedirectLogEvent.bind(this)
     const redirectLogEvent = this.redirectLogEvent.bind(this)
 
-    router.get(params.uriPathPrefix, async function redirect (ctx, next) {
+    router.get(this.uriPathPrefix, async function redirect (ctx, next) {
       await next()
       const queryParams = factory.normalizeQueryParams(ctx.request.query)
       const supportedOnly = true
@@ -92,7 +92,7 @@ module.exports = stampit()
     app
       .use(favicon(this.favicon))
       .use(session(this.sessionOpts, app))
-      .use(async function session (ctx, next) {
+      .use(async function sessionx (ctx, next) {
         if (!ctx.session.id) {
           ctx.session.id = await sessionId(ctx)
         }
