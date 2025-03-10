@@ -7,8 +7,7 @@ const Router = require('koa-router')
 const router = new Router()
 const bunyan = require('bunyan')
 const uuid = require('uuid')
-const Session = require('koa-session')
-const session = new Session
+const session = require('koa-session')
 const InvalidArgumentError = require(path.resolve(__dirname, 'invalid-arg-error'))
 
 module.exports = stampit()
