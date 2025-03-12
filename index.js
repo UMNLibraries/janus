@@ -4,7 +4,7 @@ const stampit = require('stampit')
 const Koa = require('koa')
 const favicon = require('koa-favicon')
 const Router = require('koa-router')
-const router = new Router()
+const router = new Router
 const bunyan = require('bunyan')
 const uuid = require('uuid')
 const session = require('koa-session')
@@ -67,7 +67,7 @@ module.exports = stampit()
     const defaultRedirectLogEvent = this.defaultRedirectLogEvent.bind(this)
     const redirectLogEvent = this.redirectLogEvent.bind(this)
 
-    router.get(this.uriPathPrefix, async function redirect (ctx, next) {
+    router.get(params.uriPathPrefix, async function redirect (ctx, next) {
       await next()
       const queryParams = factory.normalizeQueryParams(ctx.request.query)
       const supportedOnly = true
@@ -92,7 +92,7 @@ module.exports = stampit()
     app
       .use(favicon(this.favicon))
       .use(session(this.sessionOpts, app))
-      .use(async function sessionx (ctx, next) {
+      .use(async function session (ctx, next) {
         if (!ctx.session.id) {
           ctx.session.id = await sessionId(ctx)
         }
