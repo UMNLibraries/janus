@@ -1,6 +1,7 @@
 {
   "name": "@nihiliad/janus",
   "version": "2.1.1",
+  "type": "module",
   "description": "Common target for all library website search forms. Configurable, extensible, re-usable.",
   "main": "index.js",
   "scripts": {
@@ -25,10 +26,15 @@
     {
       "name": "Michael Berkowski",
       "email": "mjb@umn.edu"
+    },
+    {
+      "name": "John Barneson",
+      "email": "barne102@umn.edu"
     }
   ],
   "license": "MIT",
   "devDependencies": {
+    "eslint-plugin-import": "^2.31.0",
     "playwright": "^1.12.3",
     "standard": "^17.1.2",
     "tape": "^5.2.2"
@@ -43,5 +49,11 @@
     "stampit": "^4.3.2",
     "urijs": "^1.19.7",
     "uuid": "^11.1.0"
+  },
+  "plugins": ["import"],
+  "rules": {
+    "import/no-unresolved": 2,
+    "import/no-commonjs": 2,
+    "import/extensions": [2, "ignorePackages"]
   }
 }

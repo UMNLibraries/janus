@@ -1,8 +1,8 @@
 'use strict'
-const stampit = require('stampit')
-const URI = require('urijs')
+import stampit from 'stampit';
+import URI from 'urijs';
 
-module.exports = stampit()
+export default stampit()
   .props({
     emptySearchWarning: 'Missing or empty search expression.',
     badScopeWarning: 'Unrecognized scope: ',
@@ -100,4 +100,4 @@ module.exports = stampit()
         this.baseUri().addQuery(params)
       ]
     }
-  })
+  });

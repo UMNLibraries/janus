@@ -1,16 +1,26 @@
 'use strict'
-const path = require('path')
-const stampit = require('stampit')
-const Koa = require('koa')
-const favicon = require('koa-favicon')
-const Router = require('koa-router')
-const router = new Router
-const bunyan = require('bunyan')
-const uuid = require('uuid')
-const session = require('koa-session')
-const InvalidArgumentError = require(path.resolve(__dirname, 'invalid-arg-error'))
+import path from 'path';
+import stampit from 'stampit';
+import Koa from 'koa';
+import favicon from 'koa-favicon';
+import Router from 'koa-router';
+const router = new Router;
+import bunyan from 'bunyan';
+import { v1 as uuidv1 } from 'uuid';
+const myUuid = uuidv1();
+import session from 'koa-session';
+import uriFactory from './uri-factory/index.js';
 
-module.exports = stampit()
+import { resolve } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+import InvalidArgumentError from './invalid-arg-error.js';
+
+export default stampit()
   .props({
     uriFactoryPlugins: {},
     sessionOpts: {
@@ -25,7 +35,7 @@ module.exports = stampit()
   .methods({
     sessionId (ctx) {
       return new Promise(function (resolve, reject) {
-        resolve(uuid.v1())
+        resolve(myUuid)
       })
     },
 
@@ -60,7 +70,7 @@ module.exports = stampit()
     }
   })
   .init(function (params) {
-    const factory = require(path.resolve(__dirname, 'uri-factory/'))(params.uriFactoryPlugins)
+    const factory = uriFactory(params.uriFactoryPlugins)
     const sessionId = this.sessionId.bind(this)
     const errorLogger = this.errorLogger(params.errorLog)
     const redirectLogger = this.redirectLogger(params.redirectLog)
@@ -110,4 +120,4 @@ module.exports = stampit()
       })
 
     return app
-  })
+  });

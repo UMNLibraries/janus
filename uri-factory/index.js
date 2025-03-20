@@ -1,8 +1,8 @@
 'use strict'
-const InvalidArgumentError = require('../invalid-arg-error')
-const stampit = require('stampit')
+import InvalidArgumentError from '../invalid-arg-error.js';
+import stampit from 'stampit';
 
-module.exports = stampit()
+export default stampit()
   .props({
     supportedQueryParamNames: ['target', 'search', 'scope', 'field', 'format']
   })
@@ -42,4 +42,4 @@ module.exports = stampit()
       }
       factory[pluginName.toLowerCase()] = plugin
     }
-  })
+  });
