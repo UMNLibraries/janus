@@ -37,9 +37,10 @@ export default stampit()
     const factory = this
     for (const [pluginName, pluginFactory] of Object.entries(plugins)) {
       const plugin = pluginFactory
-      if (!(Reflect.has(plugin, 'uriFor') && (Reflect.getPrototypeOf(plugin.uriFor) === Function.prototype))) {
-        throw new InvalidArgumentError(`plugin "${pluginName}" has no uriFor() method`)
-      }
+      //if (!(Reflect.has(plugin, 'uriFor') && (Reflect.getPrototypeOf(plugin.uriFor) === Function.prototype))) {
+        //throw new InvalidArgumentError(`plugin "${pluginName}" has no uriFor() method`)
+      //}
       factory[pluginName.toLowerCase()] = plugin
+      console.log("Plugin name: ", pluginName);
     }
   });
