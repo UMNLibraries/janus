@@ -41,6 +41,5 @@ export default stampit()
         //throw new InvalidArgumentError(`plugin "${pluginName}" has no uriFor() method`)
       //}
       factory[pluginName.toLowerCase()] = plugin
-      console.log("Plugin name: ", pluginName);
     }
   });
