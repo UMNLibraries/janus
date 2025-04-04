@@ -1,8 +1,8 @@
 'use strict'
-const stampit = require('stampit')
-const playwright = require('playwright')
+import stampit from 'stampit';
+import playwright from 'playwright';
 
-module.exports = stampit()
+export default stampit()
   .props({
     runIntegrationTests: false
   })

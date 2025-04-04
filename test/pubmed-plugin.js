@@ -1,7 +1,9 @@
 'use strict'
-const test = require('tape')
-const plugin = require('./fixtures/pubmed-plugin')()
-const tester = require('../uri-factory/plugin-tester')({ runIntegrationTests: false })
+import test from 'tape';
+import pluginFactory from './fixtures/pubmed-plugin.js';
+const plugin = pluginFactory();
+import testerFactory from '../uri-factory/plugin-tester.js';
+const tester = testerFactory({ runIntegrationTests: false });
 
 test('setup', async function (t) {
   await tester.setup()

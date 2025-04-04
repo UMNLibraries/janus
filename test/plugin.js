@@ -1,7 +1,9 @@
 'use strict'
-const test = require('tape')
-const plugin = require('./fixtures/foo-plugin')()
-const tester = require('../uri-factory/plugin-tester')()
+import test from 'tape';
+import pluginFactory from './fixtures/foo-plugin.js';
+const plugin = pluginFactory();
+import testerFactory from '../uri-factory/plugin-tester.js';
+const tester = testerFactory();
 tester.runIntegrationTests = false
 
 test('plugin baseUri()', function (t) {

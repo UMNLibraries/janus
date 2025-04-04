@@ -1,10 +1,10 @@
 'use strict'
-const test = require('tape')
-const stampit = require('stampit')
-const fooPlugin = require('./fixtures/foo-plugin')
-const barPlugin = require('./fixtures/bar-plugin')
-const metaFactory = require('../uri-factory/')
-const InvalidArgumentError = require('../invalid-arg-error')
+import test from 'tape';
+import stampit from 'stampit';
+import fooPlugin from './fixtures/foo-plugin.js';
+import barPlugin from './fixtures/bar-plugin.js';
+import metaFactory from '../uri-factory/index.js';
+import InvalidArgumentError from '../invalid-arg-error.js';
 
 test('factory invalid plugins', function (t) {
   try {

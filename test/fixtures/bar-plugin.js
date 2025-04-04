@@ -1,7 +1,7 @@
 'use strict'
-const stampit = require('stampit')
-const URI = require('urijs')
-const plugin = require('../../uri-factory/plugin')
+import stampit from 'stampit';
+import URI from 'urijs';
+import plugin from '../../uri-factory/plugin.js';
 
 const bar = stampit()
   .methods({
@@ -26,4 +26,4 @@ const bar = stampit()
     }
   })
 
-module.exports = plugin.compose(bar)
+export default plugin.compose(bar);
