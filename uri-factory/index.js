@@ -4,12 +4,15 @@ import stampit from 'stampit';
 
 export default stampit()
   .props({
-    supportedQueryParamNames: ['target', 'search', 'scope', 'field', 'format']
+    // Special param "params=" pipe delimited targetvalue|scopevalue|formatvalue
+    supportedQueryParamNames: ['target', 'search', 'scope', 'field', 'format', 'params']
   })
   .methods({
 
     normalizeQueryParams (rawParams, supportedOnly = false) {
       const params = {}
+      const delimParamsKey = Object.keys(rawParams).find(k => k.toLowerCase() === 'params')
+
       for (const [key, value] of Object.entries(rawParams)) {
         const lcKey = key.toLowerCase()
         if (this.supportedQueryParamNames.includes(lcKey)) {
@@ -17,6 +20,18 @@ export default stampit()
         } else if (!supportedOnly) {
           params[key] = value
         }
+      }
+      // Take all values from delimited params if present, supercede parameters other than search
+      // if they had also been present
+      if (delimParamsKey) {
+        [
+          params.target,
+          params.scope,
+          params.format
+        ] = rawParams[delimParamsKey].split('|').map(v => v.replace(/\s*$/, ''))
+        // Prior loop sets the delimited string when not in supportedOnly mode
+        // Eliminate it
+        delete params[delimParamsKey]
       }
       return params
     },

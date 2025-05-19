@@ -79,6 +79,41 @@ test('factory uriFor()', async function (t) {
     'all supported param names are case-insensitive'
   )
 
+  fooUriResult = await factory.uriFor({ params: 'foo|music|audio', search: 'palestrina' })
+  t.equal(
+    fooUriResult[1].href(),
+    'https://foo.com?search=palestrina&scope=music&format=audio',
+    'pipe-delimited params= are supported'
+  )
+
+  fooUriResult = await factory.uriFor({ params: 'foo||audio', search: 'palestrina' })
+  t.equal(
+    fooUriResult[1].href(),
+    'https://foo.com?search=palestrina&format=audio',
+    'pipe-delimited params= may omit values between delimiters'
+  )
+
+  fooUriResult = await factory.uriFor({ params: 'foo', search: 'palestrina' })
+  t.equal(
+    fooUriResult[1].href(),
+    'https://foo.com?search=palestrina',
+    'pipe-delimited params= may omit all delimiters, supplying only target'
+  )
+
+  fooUriResult = await factory.uriFor({ params: 'foo|music|audio', search: 'palestrina', target: 'bar', format: 'video' })
+  t.equal(
+    fooUriResult[1].href(),
+    'https://foo.com?search=palestrina&scope=music&format=audio',
+    'pipe-delimited params= override individually supplied query values'
+  )
+
+  fooUriResult = await factory.uriFor({ ParAmS: 'foo|music|audio', search: 'palestrina' })
+  t.equal(
+    fooUriResult[1].href(),
+    'https://foo.com?search=palestrina&scope=music&format=audio',
+    'pipe-delimited params= is case-insensitive'
+  )
+
   let barUriResult = await factory.uriFor({ target: 'bar', search: 'baz' })
   t.equal(
     barUriResult[1].href(),
