@@ -282,7 +282,7 @@ Install with npm. In package.json, include something like...
   "dependencies": {
     "@nihiliad/janus": "^2.0.0"
   }
-````
+```
 
 ...where version based on the `version` value in this project's `package.json`. Then `npm install`.
 
