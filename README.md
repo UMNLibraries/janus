@@ -40,6 +40,7 @@ http://primo.lib.umn.edu/primo_library/libweb/action/dlSearch.do?institution=TWI
 	- [Sessions](#sessions)
 	- [Logging](#logging)
 		- [redirectLogEvent(ctx)](#redirectlogeventctx)
+- [Health Check URI](#health-check-uri)
 - [Install](#install)
 - [Test](#test)
 	- [Lint](#lint)
@@ -220,7 +221,7 @@ Janus uses [koa-session](https://www.npmjs.com/package/koa-session) to assign ea
 
 One way to override this method when invoking Janus:
 
-```javascript 
+```javascript
 const plugins = require('your-plugins');
 const janus = require('@nihiliad/janus').methods({
   sessionId (ctx) {
@@ -229,7 +230,7 @@ const janus = require('@nihiliad/janus').methods({
         // generate your session id
       );
     });
-  },  
+  },
 });
 const app = janus({
   uriFactoryPlugins: plugins,
@@ -264,6 +265,15 @@ const app = janus({
 app.listen(3000);
 ```
 
+## Health Check URI
+The application will return a basic `200 ok` at a URI under `uriPathPrefix`, e.g.
+```
+// uriPathPrefix = '/janus'
+
+GET /janus/healthcheck
+200 ok
+```
+
 ## Install
 
 Install with npm. In package.json, include something like...
@@ -272,7 +282,7 @@ Install with npm. In package.json, include something like...
   "dependencies": {
     "@nihiliad/janus": "^2.0.0"
   }
-```
+````
 
 ...where version based on the `version` value in this project's `package.json`. Then `npm install`.
 
