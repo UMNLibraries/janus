@@ -98,6 +98,12 @@ export default stampit()
       }
     })
 
+    // Basic 200 response to validate the node app works
+    // No logging redirect/error
+    router.get(params.uriPathPrefix + '/healthcheck', function(ctx, next) {
+      ctx.body = 'ok'
+    })
+
     const app = new Koa()
     app
       .use(favicon(this.favicon))
